@@ -146,17 +146,17 @@ export default function BookAppointment() {
                     <button
                       key={doc.id}
                       onClick={() => setSelectedDoctor(doc)}
-                      className={`p-6 rounded-3xl border-2 transition-all duration-300 flex items-center gap-6 group relative ${
+                      className={`p-2 rounded-3xl border-2 transition-all duration-300 flex items-center gap-6 group relative ${
                         isSelected 
                           ? 'border-emerald-600 bg-emerald-50/30 shadow-lg shadow-emerald-900/5' 
                           : 'border-slate-50 bg-white hover:border-slate-200 hover:shadow-xl hover:shadow-slate-900/5'
                       }`}
                     >
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-slate-100 shrink-0 shadow-md">
+                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 shadow-md">
                         <img src={doc.image_url} alt="" className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
-                         <h3 className="text-xl font-black text-slate-900 truncate leading-tight mb-1">{doc.name}</h3>
+                         <h3 className="text-md font-black text-slate-900 truncate leading-tight mb-1">{doc.name}</h3>
                          <p className="text-emerald-600 font-bold uppercase tracking-widest text-[9px] mb-3">{doc.specialization}</p>
                          <div className={`w-2 h-2 rounded-full ${isSelected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-slate-200'}`} />
                       </div>
@@ -331,7 +331,7 @@ export default function BookAppointment() {
         </div>
 
         {/* Footer Navigation */}
-        <div className="w-full max-w-xl mx-auto border-t border-slate-100 flex items-center justify-evenly">
+        <div className="w-full max-w-xl mx-auto mt-5 border-t border-slate-100 flex items-center justify-around">
           <button 
             onClick={() => setStep(step - 1)}
             disabled={step === 1}

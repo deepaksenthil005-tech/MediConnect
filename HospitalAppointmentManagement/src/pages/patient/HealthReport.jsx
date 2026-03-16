@@ -324,7 +324,8 @@ export default function HealthReport() {
           {report.medicalRecords && report.medicalRecords.length > 0 ? (
             report.medicalRecords.map((record) => (
               <div key={record.id} className="pd-record-card" style={{ 
-                padding: '1.25rem', 
+                padding: '12px', 
+                marginBottom: '10px',
                 background: 'var(--bg-secondary)', 
                 borderRadius: '1rem', 
                 border: '1px solid var(--card-border)',

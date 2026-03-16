@@ -74,7 +74,7 @@ export default function AppointmentsManagement() {
         </div>
       </div>
 
-      <div className="premium-card !p-8 border-none shadow-md transition-all">
+      <div className="premium-card !p-4 border-none shadow-md transition-all">
         <div className="flex flex-col lg:flex-row lg:items-center gap-6">
           <div className="flex-1 relative group">
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-300 group-focus-within:text-emerald-500 transition-colors" />
@@ -143,7 +143,7 @@ export default function AppointmentsManagement() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="premium-card flex flex-col xl:flex-row xl:items-center justify-between gap-10 hover:!shadow-md transition-all duration-500 group relative overflow-hidden"
+                className="premium-card  p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-10 hover:!shadow-md transition-all duration-500 group relative overflow-hidden"
               >
                 <div className={`absolute top-0 left-0 w-2 h-full ${status.color}`} />
                 <div className="flex items-center gap-8">
@@ -196,7 +196,7 @@ export default function AppointmentsManagement() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 mt-8 xl:mt-0">
+                <div className="flex items-center gap-4 mt-4 xl:mt-0">
                   <div className="flex items-center gap-3 p-2 bg-slate-50 rounded-md border border-slate-100/50">
                     {apt.status === 'PENDING' && (
                       <button 

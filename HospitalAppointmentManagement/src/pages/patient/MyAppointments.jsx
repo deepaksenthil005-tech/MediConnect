@@ -89,11 +89,11 @@ export default function MyAppointments() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 key={apt.id}
-                className="premium-card flex flex-col group hover:shadow-md transition-all duration-500"
+                className="premium-card flex flex-col group hover:shadow-md transition-all duration-500 p-4"
               >
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex gap-4">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden border-2 border-white shadow-md">
+                    <div className="w-14 h-12 md:h-14 rounded-2xl bg-slate-100 overflow-hidden border-2 border-white shadow-md">
                       <img 
                         src={`https://ui-avatars.com/api/?name=${encodeURIComponent(apt.doctor_name)}&background=random`} 
                         alt="" 
@@ -105,7 +105,7 @@ export default function MyAppointments() {
                       <p className="text-emerald-600 font-bold text-xs uppercase tracking-widest mt-0.5">{apt.specialization}</p>
                     </div>
                   </div>
-                  <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 
+                  <div className={`p-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 
                     ${apt.status === 'CONFIRMED' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 
                       apt.status === 'PENDING' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 
                       apt.status === 'CANCELLED' ? 'bg-rose-50 text-rose-600 border border-rose-100' : 
@@ -117,7 +117,7 @@ export default function MyAppointments() {
                    </div>
                 </div>
  
-                <div className="grid grid-cols-2 gap-4 p-4 rounded-md bg-slate-50 border border-slate-100 mb-6 transition-colors group-hover:bg-white group-hover:border-slate-200">
+                <div className="grid grid-cols-2 gap-4 p-2 rounded-md bg-slate-50 border border-slate-100 mb-6 transition-colors group-hover:bg-white group-hover:border-slate-200">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-white rounded-lg shadow-sm">
                       <Calendar size={14} className="text-slate-400" />
@@ -139,7 +139,7 @@ export default function MyAppointments() {
                 </div>
 
                 {(apt.status === 'PENDING' || apt.status === 'CONFIRMED') && (
-                  <div className="mt-auto pt-6 border-t border-slate-50 flex gap-3">
+                  <div className="pt-1 border-t border-slate-50 flex gap-3">
                     <button 
                       onClick={() => openReschedule(apt)}
                       className="btn-premium-outline flex-1 py-3 text-[10px] gap-2"

@@ -141,10 +141,10 @@ export default function PatientDashboardHome() {
       </div>
 
       {nextAppointment && (
-        <div className="premium-card !p-8 border-l-4 border-l-emerald-500 mb-8">
+        <div className="premium-card !p-5 border-l-4 border-l-emerald-500 mb-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-6">
-              <div className="w-20 h-20 rounded-md overflow-hidden border-4 border-white shadow-md">
+            <div className="flex items-center gap-6 justify-content-evenly">
+              <div className="w-15 h-15 md:w-20 md:h-20 rounded-md overflow-hidden border-4 border-white shadow-md">
                 <img
                   src={'https://ui-avatars.com/api/?name=' + encodeURIComponent(nextAppointment.doctor_name || 'Dr') + '&background=10b981&color=fff'}
                   alt=""
@@ -157,14 +157,14 @@ export default function PatientDashboardHome() {
                 <p className="text-slate-500 font-bold text-sm">{nextAppointment.specialization}</p>
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-4">
-               <div className="px-6 py-4 rounded-md bg-slate-50 border border-slate-100">
+            <div className="flex items-center gap-4">
+               <div className=" rounded-md bg-slate-50 border border-slate-100">
                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Date & Time</p>
                   <p className="text-sm font-black text-slate-900">{nextAppointment.date} at {nextAppointment.time}</p>
                </div>
                <button 
                  onClick={() => navigate('/dashboard/my-appointments')}
-                 className="btn-premium px-8 py-4"
+                 className="btn-premium p-4"
                >
                  View All Details
                </button>
@@ -174,7 +174,7 @@ export default function PatientDashboardHome() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="premium-card">
+        <div className="premium-card p-3">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-lg font-black text-slate-900">Weekly Activity</h3>
@@ -207,7 +207,7 @@ export default function PatientDashboardHome() {
           </div>
         </div>
 
-        <div className="premium-card">
+        <div className="premium-card p-3">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-lg font-black text-slate-900">Monthly Performance</h3>
@@ -235,7 +235,7 @@ export default function PatientDashboardHome() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2 premium-card">
+        <div className="lg:col-span-2 premium-card p-3">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-black text-slate-900 tracking-tight">Recent Medical Reports</h3>
             <Link to="/dashboard/health-report" className="text-emerald-600 text-[10px] font-black uppercase tracking-widest hover:underline">View All</Link>
@@ -267,7 +267,7 @@ export default function PatientDashboardHome() {
           </div>
         </div>
 
-        <div className="premium-card bg-emerald-600 text-white relative overflow-hidden group">
+        <div className="premium-card p-3 bg-emerald-600 text-white relative overflow-hidden group">
           <div className="relative z-10">
             <h3 className="text-xl font-black mb-2">Track Your Vitals</h3>
             <p className="text-emerald-50 text-xs font-medium mb-6 opacity-80 leading-relaxed">Regular checkups help in maintaining a detailed health history for better diagnosis.</p>
@@ -282,7 +282,7 @@ export default function PatientDashboardHome() {
         </div>
       </div>
 
-      <div className="premium-card !p-6">
+      <div className="premium-card !p-3">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="text-xl font-black text-slate-900">Need to book an appointment?</h3>

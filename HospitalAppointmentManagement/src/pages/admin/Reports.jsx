@@ -62,7 +62,7 @@ export default function Reports() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+        <div className="bg-white p-4 rounded-[1rem] border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold text-slate-900">Revenue Analysis</h3>
             <div className="flex items-center space-x-2">
@@ -89,7 +89,7 @@ export default function Reports() {
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+        <div className="bg-white p-4 rounded-[1rem] border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold text-slate-900">Appointment Trends</h3>
             <button className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg">

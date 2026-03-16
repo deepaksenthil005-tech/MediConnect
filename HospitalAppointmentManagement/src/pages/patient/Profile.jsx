@@ -142,7 +142,7 @@ export default function Profile() {
 
         {/* Right Column: Edit Profile */}
         <div className="lg:col-span-2">
-          <div className="bg-white p-8 rounded-md border border-slate-100 shadow-md shadow-slate-200/50">
+          <div className="bg-white p-3 rounded-md border border-slate-100 shadow-md shadow-slate-200/50">
             <div className="flex items-center justify-between mb-10">
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">Edit Profile</h3>
               <div className="flex items-center gap-2">
@@ -267,10 +267,10 @@ export default function Profile() {
             </form>
           </div>
 
-          <div className="mt-8 bg-white p-8 rounded-md border border-slate-100 shadow-md shadow-slate-200/50">
+          <div className="mt-8 bg-white p-3 rounded-md border border-slate-100 shadow-md shadow-slate-200/50">
              <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-black text-slate-900 tracking-tight">Clinical Documents</h3>
-                <div className="px-4 py-1.5 bg-slate-50 text-slate-400 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-100 italic">
+                <div className="p-1 bg-slate-50 text-slate-400 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-100 italic">
                    {healthReports.length} Digitized Logs
                 </div>
              </div>

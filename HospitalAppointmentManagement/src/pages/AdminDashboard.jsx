@@ -85,7 +85,7 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="bg-white p-6 rounded-md border border-slate-100 shadow-sm hover:shadow-md transition-all"
+            className="bg-white p-4 rounded-md border border-slate-100 shadow-sm hover:shadow-md transition-all"
           >
             <div className={`p-3 w-fit rounded-md ${card.color} text-white mb-4`}>
               <card.icon size={20} />
@@ -146,7 +146,7 @@ export default function AdminDashboard() {
           </div>
           <div className="space-y-4">
             {stats.recentAppointments?.map((apt) => (
-              <div key={apt.id} className="flex items-center justify-between p-4 rounded-md bg-slate-50 border border-slate-100/50 hover:bg-white transition-all">
+              <div key={apt.id} className="flex items-center justify-between py-4 px-2 mb-3 rounded-md bg-slate-50 border border-slate-100/50 hover:bg-white transition-all">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center font-black">
                     {apt.patient_name?.[0]}

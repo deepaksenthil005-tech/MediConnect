@@ -185,7 +185,7 @@ function DoctorCard({ doc, onViewProfile }) {
     >
       <div className="relative p-8 pb-0">
         {/* Availability Badge */}
-        <div className="absolute top-8 right-8 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 z-10 bg-emerald-50 text-emerald-600 border border-emerald-100">
+        <div className="absolute top-1 right-1 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 z-10 bg-emerald-50 text-emerald-600 border border-emerald-100">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
           Available
         </div>
@@ -282,7 +282,7 @@ function DoctorModal({ doctor, onClose, onBook }) {
           <X size={20} />
         </button>
 
-        <div className="p-10">
+        <div className="p-4 md:p-10 h-[600px] overflow-y-auto">
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row gap-8 mb-10">
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-md overflow-hidden bg-slate-100 border-4 border-white shadow-md shrink-0">

@@ -240,8 +240,8 @@ export default function BookAppointment() {
                 exit={{ opacity: 0, x: -20 }}
                 className="max-w-2xl mx-auto space-y-8"
               >
-                <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 space-y-8">
-                  <div className="flex flex-col md:flex-row gap-6 p-6 bg-white rounded-3xl border border-slate-200">
+                <div className="bg-slate-50 p-3 rounded-[5px] border border-slate-100 space-y-8">
+                  <div className="flex flex-col md:flex-row gap-6 p-6 bg-white rounded-3xl border border-slate-200 ">
                     <img src={selectedDoctor?.image_url} alt="" className="w-20 h-20 rounded-2xl object-cover" />
                     <div className="flex-1">
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Confirming Appointment with</p>
@@ -250,12 +250,12 @@ export default function BookAppointment() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="p-6 bg-white rounded-3xl border border-slate-200">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-6 bg-white rounded-md border border-slate-200">
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Scheduled Date</p>
                       <p className="text-sm font-black text-slate-900">{selectedDate}</p>
                     </div>
-                    <div className="p-6 bg-white rounded-3xl border border-slate-200">
+                    <div className="p-6 bg-white rounded-md border border-slate-200">
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Selected Time</p>
                       <p className="text-sm font-black text-slate-900">{selectedTime}</p>
                     </div>
@@ -331,23 +331,23 @@ export default function BookAppointment() {
         </div>
 
         {/* Footer Navigation */}
-        <div className="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
+        <div className="w-full max-w-xl mx-auto border-t border-slate-100 flex items-center justify-evenly">
           <button 
             onClick={() => setStep(step - 1)}
             disabled={step === 1}
-            className={`flex items-center gap-2 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all ${
+            className={`flex items-center gap-2 px-4 py-2  rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all ${
               step === 1 ? 'opacity-0' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
             <ChevronLeft size={16} /> Back
           </button>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             {step < 4 ? (
               <button 
                 onClick={() => setStep(step + 1)}
                 disabled={(step === 1 && !selectedDoctor) || (step === 2 && !selectedDate) || (step === 3 && !selectedTime)}
-                className="btn-premium px-8 md:px-12"
+                className="btn-premium px-4 md:px-12"
               >
                 Continue <ChevronRight size={16} />
               </button>
@@ -355,7 +355,7 @@ export default function BookAppointment() {
               <button 
                 onClick={handleConfirm}
                 disabled={submitting}
-                className="btn-premium px-8 md:px-12"
+                className="btn-premium px-4 md:px-12"
               >
                 {submitting ? 'Confirming...' : 'Complete Booking'}
               </button>

@@ -54,8 +54,8 @@ export default function MyAppointments() {
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">My Appointments</h1>
           <p className="text-slate-400 font-medium mt-1">Manage and track your healthcare visits.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="badge-premium bg-slate-100 text-slate-600 border-slate-200">
+        <div className="flex items-center p-0">
+          <span className="badge-premium bg-slate-100 text-slate-600 border-slate-200 rounded p-1 m-0 w-15 p-md-2">
             {appointments.length} Total
           </span>
         </div>

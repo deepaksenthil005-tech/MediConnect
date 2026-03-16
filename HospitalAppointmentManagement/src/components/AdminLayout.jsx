@@ -185,7 +185,7 @@ export default function AdminLayout({ children }) {
                 className="p-2.5 rounded-md text-slate-500 bg-slate-50 hover:bg-slate-100 transition-all relative"
               >
                 <Bell size={20} />
-                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center"></span>
               </button>
 
               <AnimatePresence>
@@ -194,7 +194,7 @@ export default function AdminLayout({ children }) {
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute top-full right-0 mt-3 w-80 bg-white rounded-md shadow-xl border border-slate-100 z-50 overflow-hidden"
+                    className="absolute top-full right-0 m-0 w-80 bg-white rounded-md shadow-xl border border-slate-100 z-50 overflow-hidden"
                   >
                     <div className="p-4 border-b border-slate-100 font-black text-xs uppercase tracking-widest text-slate-400">Notifications</div>
                     <div className="max-h-[400px] overflow-y-auto p-2 no-scrollbar">

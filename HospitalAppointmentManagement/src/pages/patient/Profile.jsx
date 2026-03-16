@@ -67,7 +67,7 @@ export default function Profile() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Profile Overview */}
         <div className="lg:col-span-1 space-y-8">
-          <div className="bg-white p-8 rounded-md border border-slate-100 shadow-md shadow-slate-200/50 relative overflow-hidden group">
+          <div className="bg-white p-3 rounded-md border border-slate-100 shadow-md shadow-slate-200/50 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-700" />
             
             <div className="relative flex flex-col items-center">

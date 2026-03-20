@@ -28,8 +28,8 @@ export default function Profile() {
       setForm({
         name: user.name || "",
         email: user.email || "",
-        phone: user.phone || "Not provided",
-        age: user.age || "N/A",
+        phone: user.phone || "",
+        age: user.age || "",
         gender: user.gender || "Not specified",
       });
     }

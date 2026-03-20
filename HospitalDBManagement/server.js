@@ -21,7 +21,7 @@ app.use('/api/admin', adminAuthRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api', generalRoutes);
-app.get('/api/test', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+app.get('/api/test', (req, res) => res.json({ status: 'ok', version: '1.0.2-appointments-fix', time: new Date().toISOString() }));
 
 // Database Connection
 const mongoURI = process.env.MONGO_URI || 'mongodb+srv://thalapathydeepak007_db_user:deepak123@cluster0.vk882zc.mongodb.net/mediconnect?appName=Cluster0';

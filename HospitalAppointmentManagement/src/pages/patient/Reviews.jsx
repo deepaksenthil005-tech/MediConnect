@@ -28,8 +28,8 @@ export default function Reviews() {
     if (!comment.trim()) return;
 
     await apiService.submitFeedback({
-      patient_name: user?.name || 'Anonymous',
-      doctor_name: 'General',
+      patientName: user?.name || 'Anonymous',
+      doctorName: 'General',
       rating,
       comment: comment.trim(),
     });
@@ -125,17 +125,17 @@ export default function Reviews() {
                 <Quote size={20} style={{ position: 'absolute', top: '1rem', right: '1rem', color: 'var(--card-border)', opacity: 0.5 }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(item.patient_name)}&background=random&size=40`}
-                    alt={item.patient_name}
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(item.patientName || item.patient_name)}&background=random&size=40`}
+                    alt={item.patientName}
                     style={{ width: 40, height: 40, borderRadius: '50%' }}
                   />
                   <div>
-                    <p style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-main)' }}>{item.patient_name}</p>
+                    <p style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-main)' }}>{item.patientName || item.patient_name}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <div style={{ display: 'flex', gap: 2 }}>{renderStars(item.rating)}</div>
                       <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 3 }}>
                         <Calendar size={10} />
-                        {new Date(item.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {new Date(item.createdAt || item.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
                   </div>

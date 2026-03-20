@@ -1,9 +1,11 @@
 import { apiService } from '../../services/api';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CalendarCheck, Search, Clock, CheckCircle2, XCircle, MoreVertical, Calendar, ChevronDown, Activity, FileText, Heart, Droplets, Scale, Ruler, X, UserRound, Users, ArrowLeft, ArrowRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function AppointmentsManagement() {
+  const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -41,6 +41,10 @@ export const apiService = {
     const res = await api.post('/appointments', data);
     return res.data;
   },
+  updateAppointment: async (id, data) => {
+    const res = await api.put(`/appointments/${id}`, data);
+    return res.data;
+  },
 
   // --- FEEDBACK ---
   getFeedback: async () => {

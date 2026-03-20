@@ -14,11 +14,13 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 const patientAuthRoutes = require('./routes/patientAuthRoutes');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
+const appointmentRoutes = require('./routes/appointmentRoutes');
 const generalRoutes = require('./routes/generalRoutes');
 
 app.use('/api/patient', patientAuthRoutes);
 app.use('/api/admin', adminAuthRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/appointments', appointmentRoutes);
 app.use('/api', generalRoutes);
 app.get('/api/test', (req, res) => res.json({ status: 'ok', version: '1.0.3-appointments-merged', time: new Date().toISOString() }));
 app.get('/api/debug-routes', (req, res) => res.json({ routes: ['/api/patient', '/api/admin', '/api/doctors', '/api/appointments', '/api'] }));

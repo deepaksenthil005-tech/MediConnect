@@ -7,6 +7,9 @@ const {
   getConsultationMessages, addConsultationMessage, getAllConsultations,
   getAdminStats, getPatients, deletePatient
 } = require('../controllers/generalController');
+const { 
+  getAppointments, createAppointment, updateAppointmentStatus, updateAppointment 
+} = require('../controllers/appointmentController');
 const { protectPatient, protectAdmin, protectAny } = require('../middlewares/authMiddleware');
 
 

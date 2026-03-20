@@ -181,7 +181,7 @@ function ChartCard({ title, subtitle, icon, iconBg, children, className = "" }) 
         </div>
         {icon && <div className={`p-2.5 ${iconBg} rounded-md`}>{icon}</div>}
       </div>
-      <div className="h-64">{children}</div>
+      <div className="h-64 min-w-0" style={{ minHeight: '250px' }}>{children}</div>
     </div>
   );
 }

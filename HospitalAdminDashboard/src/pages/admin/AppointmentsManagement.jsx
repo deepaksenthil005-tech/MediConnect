@@ -39,7 +39,7 @@ export default function AppointmentsManagement() {
   const filteredAppointments = appointments.filter((apt) => {
     const matchesSearch = apt.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) || apt.doctor_name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'ALL' || apt.status === statusFilter;
-    const matchesDoctor = doctorFilter === 'ALL' || apt.doctor_id.toString() === doctorFilter;
+    const matchesDoctor = doctorFilter === 'ALL' || apt.doctor_id?.toString() === doctorFilter;
     return matchesSearch && matchesStatus && matchesDoctor;
   });
 

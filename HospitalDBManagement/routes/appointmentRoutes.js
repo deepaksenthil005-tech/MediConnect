@@ -12,6 +12,6 @@ router.route('/:id/status')
   .put(protectAdmin, updateAppointmentStatus);
 
 router.route('/:id')
-  .put(protectAdmin, updateAppointment);
+  .put(protectAny, updateAppointment);
 
 module.exports = router;

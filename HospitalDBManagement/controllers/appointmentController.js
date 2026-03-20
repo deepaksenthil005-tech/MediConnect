@@ -81,9 +81,17 @@ exports.updateAppointmentStatus = async (req, res) => {
 
 exports.updateAppointment = async (req, res) => {
   try {
-    const appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const appointment = await Appointment.findById(req.params.id);
     if (!appointment) return res.status(404).json({ message: 'Appointment not found' });
-    res.json(appointment);
+
+    // Authorization check
+    if (req.user && appointment.patientId.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not authorized to update this appointment' });
+    }
+    // If req.admin, they can update anything.
+
+    const updated = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

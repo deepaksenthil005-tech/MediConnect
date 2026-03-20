@@ -7,6 +7,9 @@ const {
   getConsultationMessages, addConsultationMessage, getAllConsultations,
   getAdminStats, getPatients, deletePatient
 } = require('../controllers/generalController');
+const { 
+  getAppointments, createAppointment, updateAppointmentStatus, updateAppointment 
+} = require('../controllers/appointmentController');
 const { protectPatient, protectAdmin } = require('../middlewares/authMiddleware');
 
 const jwt = require('jsonwebtoken');
@@ -54,5 +57,14 @@ router.route('/consultations')
 router.route('/consultations/:patientId')
   .get(protectAny, getConsultationMessages)
   .post(protectAny, addConsultationMessage);
+
+// Appointments
+router.route('/appointments')
+  .get(protectAny, getAppointments)
+  .post(protectPatient, createAppointment);
+router.route('/appointments/:id/status')
+  .put(protectAdmin, updateAppointmentStatus);
+router.route('/appointments/:id')
+  .put(protectAdmin, updateAppointment);
 
 module.exports = router;

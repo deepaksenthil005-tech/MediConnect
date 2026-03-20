@@ -28,14 +28,16 @@ import {
   Cell,
   Legend
 } from 'recharts';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setIsMounted(true);
     apiService.getAdminStats().then((data) => {
       setStats(data);
       setLoading(false);
@@ -103,29 +105,33 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <ChartCard title="Appointments History" subtitle="Daily Trend" icon={<TrendingUp className="h-5 w-5 text-emerald-600" />} iconBg="bg-emerald-50">
           <div className="w-full h-[250px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={stats.appointmentsPerDay}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} />
-                <Tooltip contentStyle={{ borderRadius: '6px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }} />
-                <Line type="monotone" dataKey="count" stroke="#10b981" strokeWidth={4} dot={{ r: 4, fill: '#10b981' }} />
-              </LineChart>
-            </ResponsiveContainer>
+            {isMounted && (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={stats.appointmentsPerDay}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} />
+                  <Tooltip contentStyle={{ borderRadius: '6px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }} />
+                  <Line type="monotone" dataKey="count" stroke="#10b981" strokeWidth={4} dot={{ r: 4, fill: '#10b981' }} />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </ChartCard>
 
         <ChartCard title="Monthly Performance" subtitle="Appointment Volume" icon={<BarChart3 className="h-5 w-5 text-blue-600" />} iconBg="bg-blue-50">
           <div className="w-full h-[250px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stats.monthlyAppointments}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} />
-                <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '6px', border: 'none' }} />
-                <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} barSize={40} />
-              </BarChart>
-            </ResponsiveContainer>
+            {isMounted && (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={stats.monthlyAppointments}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} />
+                  <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '6px', border: 'none' }} />
+                  <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} barSize={40} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </ChartCard>
       </div>
@@ -133,15 +139,17 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <ChartCard title="Specialization" subtitle="Distribution" className="lg:col-span-1">
           <div className="w-full h-[250px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={stats.doctorWiseAppointments} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="count" nameKey="doctor">
-                  {stats.doctorWiseAppointments.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} cornerRadius={4} />)}
-                </Pie>
-                <Tooltip contentStyle={{ borderRadius: '6px', border: 'none' }} />
-                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px', fontWeight: 'bold' }} />
-              </PieChart>
-            </ResponsiveContainer>
+            {isMounted && (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={stats.doctorWiseAppointments} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="count" nameKey="doctor">
+                    {stats.doctorWiseAppointments.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} cornerRadius={4} />)}
+                  </Pie>
+                  <Tooltip contentStyle={{ borderRadius: '6px', border: 'none' }} />
+                  <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px', fontWeight: 'bold' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </ChartCard>
 

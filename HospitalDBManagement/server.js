@@ -23,7 +23,8 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api', generalRoutes);
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI).then(() => {
+const mongoURI = process.env.MONGO_URI || 'mongodb+srv://thalapathydeepak007_db_user:deepak123@cluster0.vk882zc.mongodb.net/mediconnect?appName=Cluster0';
+mongoose.connect(mongoURI).then(() => {
   console.log('Connected to MongoDB');
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {

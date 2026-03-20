@@ -5,7 +5,7 @@ const protectPatient = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretmedicalkey123');
       req.user = decoded; // { id: patientId }
       // We could optionally fetch the user from DB to ensure they still exist,
       // but decoding the JWT is sufficient for most basic checks.
@@ -23,7 +23,7 @@ const protectAdmin = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretmedicalkey123');
       if (decoded.role !== 'ADMIN') {
         return res.status(403).json({ message: 'Not authorized as admin' });
       }

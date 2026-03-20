@@ -2,7 +2,7 @@ const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
 
 const generateToken = (id) => {
-  return jwt.sign({ id, role: 'ADMIN' }, process.env.JWT_SECRET, {
+  return jwt.sign({ id, role: 'ADMIN' }, process.env.JWT_SECRET || 'supersecretmedicalkey123', {
     expiresIn: '30d',
   });
 };

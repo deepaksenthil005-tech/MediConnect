@@ -2,7 +2,7 @@ const Patient = require('../models/Patient');
 const jwt = require('jsonwebtoken');
 
 const generateToken = (id) => {
-  return jwt.sign({ id, role: 'USER' }, process.env.JWT_SECRET, {
+  return jwt.sign({ id, role: 'USER' }, process.env.JWT_SECRET || 'supersecretmedicalkey123', {
     expiresIn: '30d',
   });
 };

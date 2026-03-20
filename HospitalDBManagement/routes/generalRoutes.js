@@ -40,4 +40,20 @@ router.route('/consultations/:patientId')
   .post(protectAny, addConsultationMessage);
 
 
+// Appointments
+router.route('/appointments')
+  .get(protectAny, getAppointments)
+  .post(protectPatient, createAppointment);
+
+// Alias for singular
+router.route('/appointment')
+  .get(protectAny, getAppointments)
+  .post(protectPatient, createAppointment);
+
+router.route('/appointments/:id/status')
+  .put(protectAdmin, updateAppointmentStatus);
+
+router.route('/appointments/:id')
+  .put(protectAny, updateAppointment);
+
 module.exports = router;

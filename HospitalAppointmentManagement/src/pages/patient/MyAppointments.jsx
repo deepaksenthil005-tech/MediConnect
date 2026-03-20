@@ -87,7 +87,7 @@ export default function MyAppointments() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  key={apt.id}
+                  key={apt._id}
                   className="premium-card flex flex-col group hover:shadow-md transition-all duration-500 p-4"
                 >
                   <div className="flex items-start justify-between mb-6">
@@ -146,7 +146,7 @@ export default function MyAppointments() {
                         <RotateCcw size={14} /> Reschedule
                       </button>
                       <button
-                        onClick={() => handleCancel(apt.id)}
+                        onClick={() => handleCancel(apt._id)}
                         className="flex-1 py-3 px-4 rounded-md border border-rose-100 bg-rose-50 text-rose-600 font-black uppercase tracking-widest text-[10px] hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-all flex items-center justify-center gap-2"
                       >
                         <Trash2 size={14} /> Cancel

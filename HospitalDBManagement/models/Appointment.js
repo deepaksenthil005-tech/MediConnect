@@ -10,7 +10,7 @@ const appointmentSchema = new mongoose.Schema({
   time: { type: String, required: true }, // Format: HH:MM AM/PM
   status: { type: String, enum: ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'], default: 'PENDING' },
   reason: { type: String },
-  createdAt: { type: Date, default: Date.now }
-});
+  createdAt: { type: Date, default: Date.now },
+}, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 module.exports = mongoose.model('Appointment', appointmentSchema);

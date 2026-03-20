@@ -53,13 +53,18 @@ export default function BookAppointment() {
   const handleConfirm = async () => {
     if (!selectedDoctor || !selectedDate || !selectedTime || !user) return;
     setSubmitting(true);
-
     try {
       await apiService.createAppointment({
-        doctorId: selectedDoctor._id || selectedDoctor.id,
+        patient_id: user.id,
+        doctor_id: selectedDoctor.id,
+        patient_name: user.name,
+        doctor_name: selectedDoctor.name,
+        specialization: selectedDoctor.specialization,
         date: selectedDate,
         time: selectedTime,
-        reason
+        reason: reason,
+        previous_report: previousReport ? { name: previousReport.name, size: previousReport.size, date: new Date().toLocaleDateString() } : null,
+        status: 'PENDING'
       });
 
       await apiService.sendNotification({
@@ -70,9 +75,8 @@ export default function BookAppointment() {
 
       setSuccess(true);
     } catch (e) {
-      alert(e.response?.data?.message || e.message || 'Failed to book');
+      alert(e.message || 'Failed to book');
     }
-
     setSubmitting(false);
   };
 
@@ -108,10 +112,10 @@ export default function BookAppointment() {
             <React.Fragment key={s}>
               <div className="flex items-center gap-3 shrink-0">
                 <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all duration-500 ${step === i + 1
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 scale-110'
-                  : step > i + 1
-                    ? 'bg-emerald-100 text-emerald-600'
-                    : 'bg-white text-slate-300 border border-slate-200'
+                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 scale-110'
+                    : step > i + 1
+                      ? 'bg-emerald-100 text-emerald-600'
+                      : 'bg-white text-slate-300 border border-slate-200'
                   }`}>
                   {step > i + 1 ? <CheckCircle2 size={18} /> : i + 1}
                 </div>
@@ -141,8 +145,8 @@ export default function BookAppointment() {
                       key={doc.id}
                       onClick={() => setSelectedDoctor(doc)}
                       className={`p-2 rounded-3xl border-2 transition-all duration-300 flex items-center gap-6 group relative ${isSelected
-                        ? 'border-emerald-600 bg-emerald-50/30 shadow-lg shadow-emerald-900/5'
-                        : 'border-slate-50 bg-white hover:border-slate-200 hover:shadow-xl hover:shadow-slate-900/5'
+                          ? 'border-emerald-600 bg-emerald-50/30 shadow-lg shadow-emerald-900/5'
+                          : 'border-slate-50 bg-white hover:border-slate-200 hover:shadow-xl hover:shadow-slate-900/5'
                         }`}
                     >
                       <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 shadow-md">
@@ -213,8 +217,8 @@ export default function BookAppointment() {
                       key={t}
                       onClick={() => setSelectedTime(t)}
                       className={`p-6 rounded-3xl font-black uppercase tracking-widest text-[10px] border-2 transition-all duration-300 ${selectedTime === t
-                        ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-105'
-                        : 'border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-200 hover:bg-white'
+                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-105'
+                          : 'border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-200 hover:bg-white'
                         }`}
                     >
                       {t}

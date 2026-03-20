@@ -7,27 +7,8 @@ const {
   getConsultationMessages, addConsultationMessage, getAllConsultations,
   getAdminStats, getPatients, deletePatient
 } = require('../controllers/generalController');
-const { 
-  getAppointments, createAppointment, updateAppointmentStatus, updateAppointment 
-} = require('../controllers/appointmentController');
-const { protectPatient, protectAdmin } = require('../middlewares/authMiddleware');
+const { protectPatient, protectAdmin, protectAny } = require('../middlewares/authMiddleware');
 
-const jwt = require('jsonwebtoken');
-const protectAny = async (req, res, next) => {
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      if (decoded.role === 'ADMIN') req.admin = decoded; else req.user = decoded;
-      next();
-    } catch (error) {
-      res.status(401).json({ message: 'Not authorized, token failed' });
-    }
-  } else {
-    res.status(401).json({ message: 'Not authorized, no token' });
-  }
-};
 
 // Stats & Patients
 router.get('/stats', protectAdmin, getAdminStats);
@@ -58,13 +39,5 @@ router.route('/consultations/:patientId')
   .get(protectAny, getConsultationMessages)
   .post(protectAny, addConsultationMessage);
 
-// Appointments
-router.route('/appointments')
-  .get(protectAny, getAppointments)
-  .post(protectPatient, createAppointment);
-router.route('/appointments/:id/status')
-  .put(protectAdmin, updateAppointmentStatus);
-router.route('/appointments/:id')
-  .put(protectAdmin, updateAppointment);
 
 module.exports = router;

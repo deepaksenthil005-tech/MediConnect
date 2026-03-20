@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Key, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
-import { localDb } from '../services/localDb';
+import { apiService } from "../services/api";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1);
@@ -19,7 +19,7 @@ export default function ForgotPassword() {
     setError('');
     setIsLoading(true);
     try {
-      const res = await localDb.forgotPassword(email);
+      const res = await apiService.forgotPassword(email);
       setSuccess(`OTP sent to ${email}. (Demo OTP: ${res.otp})`);
       setStep(2);
     } catch (err) {
@@ -38,7 +38,7 @@ export default function ForgotPassword() {
     }
     setIsLoading(true);
     try {
-      await localDb.resetPassword({ email, otp, newPassword });
+      await apiService.resetPassword({ email, otp, newPassword });
       setSuccess('Password reset successful! Redirecting to login...');
       setTimeout(() => navigate('/login'), 3000);
     } catch (err) {

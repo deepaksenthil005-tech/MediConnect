@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DoctorCard from '../components/DoctorCard';
 import { Search, Filter, Stethoscope } from 'lucide-react';
-import { localDb } from '../services/localDb';
+import { apiService } from "../services/api";
 import { useAuth } from '../context/AuthContext';
 
 export default function Doctors() {
@@ -14,7 +14,7 @@ export default function Doctors() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localDb.getDoctors().then((data) => {
+    apiService.getDoctors().then((data) => {
       setDoctors(data);
       setIsLoading(false);
     });

@@ -30,7 +30,7 @@ export default function Header() {
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to={user ? (user.role === 'ADMIN' ? '/admin' : '/dashboard') : '/'} className="flex items-center space-x-2 shrink-0">
+          <Link to={user ? '/dashboard' : '/'} className="flex items-center space-x-2 shrink-0">
             <div className="bg-emerald-500 p-2 rounded-md">
               <Stethoscope className="h-6 w-6 text-white" />
             </div>
@@ -54,20 +54,20 @@ export default function Header() {
             {user && !['/login', '/register'].includes(location.pathname) ? (
               <div className="flex items-center space-x-3 md:space-x-6">
                 <Link
-                  to={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
+                  to="/dashboard"
                   className="hidden lg:flex flex-col items-end hover:opacity-80 transition-opacity"
                 >
                   <span className="text-sm font-bold text-gray-900 leading-none">{user.name}</span>
                   <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mt-1">
-                    {user.role === 'ADMIN' ? 'Hospital Admin' : 'Patient'}
+                    Patient
                   </span>
                 </Link>
                 <Link
-                  to={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
+                  to="/dashboard"
                   className="flex items-center space-x-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-md hover:bg-emerald-100 transition-all font-bold text-sm"
                 >
                   <LayoutDashboard className="h-4 w-4" />
-                  <span>{user.role === 'ADMIN' ? 'Admin Hub' : 'Patient Portal'}</span>
+                  <span>Patient Portal</span>
                 </Link>
                 <button
                   onClick={handleLogout}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { Calendar, CalendarCheck, CheckCircle, XCircle, TrendingUp, FileText, ArrowRight, Heart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReportViewerModal from '../../components/ReportViewerModal';
@@ -28,8 +28,8 @@ export default function PatientDashboardHome() {
   useEffect(() => {
     if (user) {
       Promise.all([
-        localDb.getAppointments(user.id, user.role),
-        localDb.getHealthReport(user.id)
+        apiService.getAppointments(user.id, user.role),
+        apiService.getHealthReport(user.id)
       ]).then(([aptData, reportData]) => {
         setAppointments(aptData);
         setHealthReport(reportData);

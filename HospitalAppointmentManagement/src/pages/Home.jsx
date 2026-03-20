@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck, Calendar, Users, Activity, LayoutDashboard, User, ClipboardList, Settings, Stethoscope } from 'lucide-react';
 import DoctorCard from '../components/DoctorCard';
 import { useAuth } from '../context/AuthContext';
-import { localDb } from '../services/localDb';
+import { apiService } from "../services/api";
 
 export default function Home() {
   const [featuredDoctors, setFeaturedDoctors] = useState([]);
@@ -16,7 +16,7 @@ export default function Home() {
       navigate(user.role === 'ADMIN' ? '/admin' : '/dashboard');
       return;
     }
-    localDb.getDoctors().then((doctors) => {
+    apiService.getDoctors().then((doctors) => {
       setFeaturedDoctors(doctors.slice(0, 3));
     });
   }, [user, navigate]);

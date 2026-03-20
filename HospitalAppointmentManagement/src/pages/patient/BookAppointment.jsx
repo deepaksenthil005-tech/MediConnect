@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { 
   ChevronRight, 
   Calendar, 
@@ -38,7 +38,7 @@ export default function BookAppointment() {
   const [previousReport, setPreviousReport] = useState(null);
 
   useEffect(() => {
-    localDb.getDoctors().then(data => {
+    apiService.getDoctors().then(data => {
       setDoctors(data);
       if (doctorIdParam) {
         const d = data.find(doc => doc.id === parseInt(doctorIdParam, 10));
@@ -54,7 +54,7 @@ export default function BookAppointment() {
     if (!selectedDoctor || !selectedDate || !selectedTime || !user) return;
     setSubmitting(true);
     try {
-      await localDb.createAppointment({
+      await apiService.createAppointment({
         patient_id: user.id,
         doctor_id: selectedDoctor.id,
         patient_name: user.name,
@@ -67,7 +67,7 @@ export default function BookAppointment() {
         status: 'PENDING'
       });
 
-      await localDb.sendNotification({
+      await apiService.sendNotification({
         title: 'New Appointment Request',
         message: `${user.name} has requested an appointment with ${selectedDoctor.name}.`,
         type: 'APPOINTMENT',

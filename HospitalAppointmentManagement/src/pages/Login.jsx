@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
-import { localDb } from '../services/localDb';
+import { apiService } from "../services/api";
 
 export default function Login() {
-  const [role, setRole] = useState('USER');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,7 +14,11 @@ export default function Login() {
 
   React.useEffect(() => {
     if (user) {
-      navigate(user.role === 'ADMIN' ? '/admin' : '/dashboard');
+      if (user.role === 'USER') {
+        navigate('/dashboard');
+      } else {
+        setError('Unauthorized: Patients only');
+      }
     }
   }, [user, navigate]);
 
@@ -24,9 +27,12 @@ export default function Login() {
     setError('');
     setIsLoading(true);
     try {
-      const res = await localDb.login({ email, password });
+      const res = await apiService.login({ email, password });
+      if (res.user.role !== 'USER') {
+        throw new Error('Unauthorized: Patient access only.');
+      }
       login(res.user, res.token);
-      navigate(res.user.role === 'ADMIN' ? '/admin' : '/dashboard');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {
@@ -42,24 +48,7 @@ export default function Login() {
             <LogIn className="h-8 w-8 text-emerald-600" />
           </div>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h2>
-          <p className="text-gray-500 mt-2">Enter your credentials to access your account</p>
-        </div>
-
-        <div className="flex bg-gray-100 p-1 rounded-2xl mb-8">
-          <button
-            type="button"
-            onClick={() => setRole('USER')}
-            className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${role === 'USER' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Patient
-          </button>
-          <button
-            type="button"
-            onClick={() => setRole('ADMIN')}
-            className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${role === 'ADMIN' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Hospital Admin
-          </button>
+          <p className="text-gray-500 mt-2">Sign in to your patient portal</p>
         </div>
 
         {error && (
@@ -80,7 +69,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                placeholder="name@example.com"
+                placeholder="Ex. john@example.com"
               />
             </div>
           </div>
@@ -113,7 +102,7 @@ export default function Login() {
             disabled={isLoading}
             className="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center"
           >
-            {isLoading ? 'Signing in...' : role === 'USER' ? 'Patient Sign In' : 'Admin Sign In'}
+            {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 

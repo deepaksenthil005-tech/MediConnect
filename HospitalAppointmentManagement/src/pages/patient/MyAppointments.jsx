@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Clock, User, X, CheckCircle, AlertCircle, Clock3, RotateCcw, Trash2 } from 'lucide-react';
 
@@ -16,7 +16,7 @@ export default function MyAppointments() {
 
   useEffect(() => {
     if (user) {
-      localDb.getAppointments(user.id, user.role).then((data) => {
+      apiService.getAppointments(user.id, user.role).then((data) => {
         setAppointments(data);
         setLoading(false);
       });
@@ -25,7 +25,7 @@ export default function MyAppointments() {
 
   const handleCancel = async (id) => {
     if (!window.confirm('Cancel this appointment?')) return;
-    await localDb.updateAppointmentStatus(id, 'CANCELLED');
+    await apiService.updateAppointmentStatus(id, 'CANCELLED');
     setAppointments((prev) => prev.map((a) => (a.id === id ? { ...a, status: 'CANCELLED' } : a)));
   };
 
@@ -37,7 +37,7 @@ export default function MyAppointments() {
 
   const handleRescheduleSave = async () => {
     if (!rescheduleFor || !newDate || !newTime) return;
-    await localDb.updateAppointment(rescheduleFor.id, { date: newDate, time: newTime, status: 'PENDING' });
+    await apiService.updateAppointment(rescheduleFor.id, { date: newDate, time: newTime, status: 'PENDING' });
     setAppointments((prev) =>
       prev.map((a) =>
         a.id === rescheduleFor.id ? { ...a, date: newDate, time: newTime, status: 'PENDING' } : a

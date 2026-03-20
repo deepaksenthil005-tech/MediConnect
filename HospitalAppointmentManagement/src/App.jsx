@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminLayout from './components/AdminLayout';
 
 import Home from './pages/Home';
 import Doctors from './pages/Doctors';
@@ -20,15 +19,6 @@ import Prescriptions from './pages/patient/Prescriptions';
 import PatientReviews from './pages/patient/Reviews';
 import PatientProfile from './pages/patient/Profile';
 import PatientSettings from './pages/patient/Settings';
-import AdminDashboard from './pages/AdminDashboard';
-import DoctorsManagement from './pages/admin/DoctorsManagement';
-import PatientsManagement from './pages/admin/PatientsManagement';
-import AppointmentsManagement from './pages/admin/AppointmentsManagement';
-import Reports from './pages/admin/Reports';
-import Notifications from './pages/admin/Notifications';
-import Feedback from './pages/admin/Feedback';
-import Settings from './pages/admin/Settings';
-import AdminProfile from './pages/admin/Profile';
 import About from './pages/About';
 import Services from './pages/Services';
 import Reviews from './pages/Reviews';
@@ -37,9 +27,8 @@ import ForgotPassword from './pages/ForgotPassword';
 function AppContent() {
   const { isLoading } = useAuth();
   const location = useLocation();
-  const isAdminPath = location.pathname.startsWith('/admin');
   const isPatientDashboard = location.pathname.startsWith('/dashboard');
-  const showSiteHeader = !isAdminPath && !isPatientDashboard;
+  const showSiteHeader = !isPatientDashboard;
 
   if (isLoading) {
     return (
@@ -52,7 +41,7 @@ function AppContent() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       {showSiteHeader && <Header />}
-      <main className={isAdminPath || isPatientDashboard ? '' : 'flex-grow'}>
+      <main className={isPatientDashboard ? '' : 'flex-grow'}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/doctors" element={<Doctors />} />
@@ -82,27 +71,6 @@ function AppContent() {
             <Route path="profile" element={<PatientProfile />} />
             <Route path="settings" element={<PatientSettings />} />
           </Route>
-
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute allowedRoles={['ADMIN']}>
-                <AdminLayout>
-                  <Routes>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="doctors" element={<DoctorsManagement />} />
-                    <Route path="patients" element={<PatientsManagement />} />
-                    <Route path="appointments" element={<AppointmentsManagement />} />
-                    <Route path="reports" element={<Reports />} />
-                    <Route path="notifications" element={<Notifications />} />
-                    <Route path="feedback" element={<Feedback />} />
-                    <Route path="profile" element={<AdminProfile />} />
-                    <Route path="settings" element={<Settings />} />
-                  </Routes>
-                </AdminLayout>
-              </ProtectedRoute>
-            }
-          />
         </Routes>
       </main>
       {showSiteHeader && <Footer />}

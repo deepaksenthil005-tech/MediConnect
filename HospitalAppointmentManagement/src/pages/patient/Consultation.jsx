@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Video, VideoOff, Mic, MicOff, PhoneOff, Image, Search, MoreVertical, Paperclip, Smile } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Consultation() {
@@ -15,7 +15,7 @@ export default function Consultation() {
 
   useEffect(() => {
     if (!user) return;
-    localDb.getConsultationMessages(user.id).then((stored) => {
+    apiService.getConsultationMessages(user.id).then((stored) => {
       if (stored.length > 0) {
         setMessages(stored);
       } else {
@@ -35,7 +35,7 @@ export default function Consultation() {
     const message = { text, sent: true, sender: 'PATIENT', created_at: new Date().toISOString() };
     setMessages((prev) => [...prev, { ...message, id: Date.now() }]);
     if (user) {
-      localDb.addConsultationMessage(user.id, message);
+      apiService.addConsultationMessage(user.id, message);
     }
     setInput('');
     setTimeout(scrollToBottom, 100);

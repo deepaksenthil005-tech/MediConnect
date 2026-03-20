@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { Star, Search, MapPin, Clock, Calendar, X, ChevronRight, Award, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
@@ -36,7 +36,7 @@ export default function FindDoctors() {
   // -- Data Fetching --
   useEffect(() => {
     // Fetches doctor data from local storage service
-    localDb.getDoctors().then((data) => {
+    apiService.getDoctors().then((data) => {
       setDoctors(data);
       setLoading(false);
     });

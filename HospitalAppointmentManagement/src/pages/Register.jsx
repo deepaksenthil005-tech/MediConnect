@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { UserPlus, Mail, Lock, User, AlertCircle } from 'lucide-react';
-import { localDb } from '../services/localDb';
+import { apiService } from "../services/api";
 
 export default function Register() {
-  const [role, setRole] = useState('USER');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +15,7 @@ export default function Register() {
 
   React.useEffect(() => {
     if (user) {
-      navigate(user.role === 'ADMIN' ? '/admin' : '/dashboard');
+      navigate('/dashboard');
     }
   }, [user, navigate]);
 
@@ -25,9 +24,9 @@ export default function Register() {
     setError('');
     setIsLoading(true);
     try {
-      const res = await localDb.register({ name, email, password, role });
+      const res = await apiService.register({ name, email, password, role: 'USER' });
       login(res.user, res.token);
-      navigate(role === 'ADMIN' ? '/admin' : '/dashboard');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {
@@ -44,23 +43,6 @@ export default function Register() {
           </div>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Create Account</h2>
           <p className="text-gray-500 mt-2">Join MediConnect today for better healthcare</p>
-        </div>
-
-        <div className="flex bg-gray-100 p-1 rounded-2xl mb-8">
-          <button
-            type="button"
-            onClick={() => setRole('USER')}
-            className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${role === 'USER' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Patient
-          </button>
-          <button
-            type="button"
-            onClick={() => setRole('ADMIN')}
-            className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${role === 'ADMIN' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Hospital Admin
-          </button>
         </div>
 
         {error && (
@@ -121,7 +103,7 @@ export default function Register() {
             disabled={isLoading}
             className="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center mt-4"
           >
-            {isLoading ? 'Processing...' : role === 'USER' ? 'Create Patient Account' : 'Create Admin Account'}
+            {isLoading ? 'Processing...' : 'Create Account'}
           </button>
         </form>
 

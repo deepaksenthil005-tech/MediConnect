@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Send, CheckCircle, Quote, Calendar } from 'lucide-react';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { useAuth } from '../../context/AuthContext';
 
 export default function Reviews() {
@@ -13,7 +13,7 @@ export default function Reviews() {
   const [loading, setLoading] = useState(true);
 
   const fetchReviews = () => {
-    localDb.getFeedback().then((data) => {
+    apiService.getFeedback().then((data) => {
       setAllReviews(data.slice().reverse()); // newest first
       setLoading(false);
     });
@@ -27,7 +27,7 @@ export default function Reviews() {
     e.preventDefault();
     if (!comment.trim()) return;
 
-    await localDb.submitFeedback({
+    await apiService.submitFeedback({
       patient_name: user?.name || 'Anonymous',
       doctor_name: 'General',
       rating,

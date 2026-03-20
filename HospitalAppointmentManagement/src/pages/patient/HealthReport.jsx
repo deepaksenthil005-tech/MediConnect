@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Activity, Heart, Scale, Ruler, Droplets, Brain, FileText, Upload, Trash2, ExternalLink, Download, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import ReportViewerModal from '../../components/ReportViewerModal';
 
@@ -27,7 +27,7 @@ export default function HealthReport() {
   }, [user]);
 
   const refreshData = () => {
-    localDb.getHealthReport(user.id).then(data => {
+    apiService.getHealthReport(user.id).then(data => {
       setReport(data);
       setFormData({
         weight: data.weight,
@@ -42,7 +42,7 @@ export default function HealthReport() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    await localDb.saveHealthReport(user.id, {
+    await apiService.saveHealthReport(user.id, {
       ...formData,
       weight: parseFloat(formData.weight),
       height: parseFloat(formData.height),
@@ -62,7 +62,7 @@ export default function HealthReport() {
       size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
     };
 
-    await localDb.addMedicalRecord(user.id, record);
+    await apiService.addMedicalRecord(user.id, record);
     refreshData();
   };
 

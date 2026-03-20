@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Star, Quote } from 'lucide-react';
-import { localDb } from '../services/localDb';
+import { apiService } from "../services/api";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    localDb.getFeedback().then((data) => {
+    apiService.getFeedback().then((data) => {
       setReviews(data.slice().reverse());
       setLoading(false);
     });

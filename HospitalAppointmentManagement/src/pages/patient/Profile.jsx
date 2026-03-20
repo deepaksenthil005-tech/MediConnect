@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Camera, Mail, Phone, Calendar, User, FileText, CheckCircle2, ArrowRight } from 'lucide-react';
-import { localDb } from '../../services/localDb';
+import { apiService } from "../../services/api";
 import ReportViewerModal from '../../components/ReportViewerModal';
 
 export default function Profile() {
@@ -30,7 +30,7 @@ export default function Profile() {
         gender: user.gender || 'Not specified',
         medical_history: user.medical_history || 'No history recorded.',
       });
-      localDb.getHealthReport(user.id).then(data => {
+      apiService.getHealthReport(user.id).then(data => {
         setHealthReports(data.medicalRecords || []);
         setFullHealthData(data);
       });
@@ -45,7 +45,7 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const updatedUser = await localDb.updateUser(user.id, form);
+      const updatedUser = await apiService.updateUser(user.id, form);
       updateUser(updatedUser);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
@@ -157,7 +157,7 @@ export default function Profile() {
                       const reader = new FileReader();
                       reader.onloadend = async () => {
                         const base64 = reader.result;
-                        await localDb.updateUserPhoto(user.id, base64);
+                        await apiService.updateUserPhoto(user.id, base64);
                         window.location.reload();
                       };
                       reader.readAsDataURL(file);

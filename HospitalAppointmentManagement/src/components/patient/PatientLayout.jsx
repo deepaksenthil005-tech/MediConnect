@@ -7,7 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { localDb } from "../../services/localDb";
+import { apiService } from "../../services/api";
 import {
   LayoutDashboard,
   Search,
@@ -66,7 +66,7 @@ export default function PatientLayout() {
   useEffect(() => {
     if (!showNotifications || notifications.length > 0) return;
     setLoadingNotifications(true);
-    localDb
+    apiService
       .getNotifications()
       .then((data) => setNotifications(data.slice().reverse()))
       .finally(() => setLoadingNotifications(false));

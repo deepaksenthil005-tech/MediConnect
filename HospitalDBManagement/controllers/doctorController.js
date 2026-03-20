@@ -14,6 +14,14 @@ exports.addDoctor = async (req, res) => {
     const doctor = await Doctor.create(req.body);
     res.status(201).json(doctor);
   } catch (error) {
+    console.error("Add Doctor Error:", error);
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
     res.status(400).json({ message: error.message });
   }
 };

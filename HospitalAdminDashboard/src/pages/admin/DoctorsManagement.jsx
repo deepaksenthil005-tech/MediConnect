@@ -438,6 +438,7 @@ transition-opacity duration-500 flex items-end p-4 md:p-6 lg:p-8"
                       Direct Line
                     </label>
                     <input
+                      required
                       type="tel"
                       value={formData.phone}
                       onChange={(e) =>
@@ -473,7 +474,7 @@ transition-opacity duration-500 flex items-end p-4 md:p-6 lg:p-8"
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          fee: parseInt(e.target.value),
+                          fee: parseInt(e.target.value) || 0,
                         })
                       }
                       className="premium-input !py-4"
@@ -521,6 +522,7 @@ transition-opacity duration-500 flex items-end p-4 md:p-6 lg:p-8"
                       Professional Narrative
                     </label>
                     <textarea
+                      required
                       rows={5}
                       value={formData.bio}
                       onChange={(e) =>

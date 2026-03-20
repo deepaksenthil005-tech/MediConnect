@@ -47,7 +47,7 @@ export default function DoctorsManagement() {
     availability: "Mon - Fri, 9:00 AM - 5:00 PM",
     fee: 500,
     bio: "",
-    image_url: "https://picsum.photos/seed/doctor/200/200",
+    imageUrl: "https://picsum.photos/seed/doctor/200/200",
   });
 
   const specializations = [
@@ -88,7 +88,7 @@ export default function DoctorsManagement() {
         availability: "Mon - Fri, 9:00 AM - 5:00 PM",
         fee: 500,
         bio: "",
-        image_url: `https://picsum.photos/seed/${Math.random()}/200/200`,
+        imageUrl: `https://picsum.photos/seed/${Math.random()}/200/200`,
       });
     }
     setIsModalOpen(true);
@@ -99,7 +99,7 @@ export default function DoctorsManagement() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) =>
-      setFormData((prev) => ({ ...prev, image_url: ev.target.result }));
+      setFormData((prev) => ({ ...prev, imageUrl: ev.target.result }));
     reader.readAsDataURL(file);
   };
 
@@ -232,7 +232,7 @@ export default function DoctorsManagement() {
             >
               <div className="relative h-56 overflow-hidden">
                 <img
-                  src={doctor.image_url}
+                  src={doctor.imageUrl}
                   alt={doctor.name}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
@@ -356,7 +356,7 @@ transition-opacity duration-500 flex items-end p-4 md:p-6 lg:p-8"
                   >
                     <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-100 shadow-lg">
                       <img
-                        src={formData.image_url}
+                        src={formData.imageUrl}
                         alt="Doctor photo"
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"

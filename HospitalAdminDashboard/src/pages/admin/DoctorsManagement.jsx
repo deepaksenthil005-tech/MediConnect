@@ -106,7 +106,7 @@ export default function DoctorsManagement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editingDoctor) {
-      await apiService.updateDoctor(editingDoctor.id, formData);
+      await apiService.updateDoctor(editingDoctor._id || editingDoctor.id, formData);
     } else {
       await apiService.addDoctor(formData);
     }
@@ -224,7 +224,7 @@ export default function DoctorsManagement() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredDoctors.map((doctor, index) => (
             <motion.div
-              key={doctor.id}
+              key={doctor._id || doctor.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
@@ -251,7 +251,7 @@ transition-opacity duration-500 flex items-end p-4 md:p-6 lg:p-8"
                     </button>
 
                     <button
-                      onClick={() => handleDelete(doctor.id)}
+                      onClick={() => handleDelete(doctor._id || doctor.id)}
                       className="flex-1 py-2 md:py-3 bg-rose-500/80 backdrop-blur-xl hover:bg-rose-600 text-white rounded-md transition-all flex items-center justify-center border border-rose-500/30"
                     >
                       <Trash2 size={16} />

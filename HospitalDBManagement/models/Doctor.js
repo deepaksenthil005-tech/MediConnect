@@ -13,6 +13,9 @@ const doctorSchema = new mongoose.Schema({
   status: { type: String, default: 'Available' },
   imageUrl: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 module.exports = mongoose.model('Doctor', doctorSchema);

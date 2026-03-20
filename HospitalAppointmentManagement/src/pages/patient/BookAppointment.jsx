@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from "../../services/api";
-import { 
-  ChevronRight, 
-  Calendar, 
-  Clock, 
-  CheckCircle2, 
-  User, 
-  AlertCircle, 
+import {
+  ChevronRight,
+  Calendar,
+  Clock,
+  CheckCircle2,
+  User,
+  AlertCircle,
   ArrowLeft,
   Stethoscope,
   ChevronLeft,
@@ -26,7 +26,7 @@ export default function BookAppointment() {
   const navigate = useNavigate();
   const doctorIdParam = searchParams.get('doctor');
   const { user } = useAuth();
-  
+
   const [doctors, setDoctors] = useState([]);
   const [step, setStep] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -53,18 +53,13 @@ export default function BookAppointment() {
   const handleConfirm = async () => {
     if (!selectedDoctor || !selectedDate || !selectedTime || !user) return;
     setSubmitting(true);
+
     try {
       await apiService.createAppointment({
-        patient_id: user.id,
-        doctor_id: selectedDoctor.id,
-        patient_name: user.name,
-        doctor_name: selectedDoctor.name,
-        specialization: selectedDoctor.specialization,
+        doctorId: selectedDoctor._id || selectedDoctor.id,
         date: selectedDate,
         time: selectedTime,
-        reason: reason,
-        previous_report: previousReport ? { name: previousReport.name, size: previousReport.size, date: new Date().toLocaleDateString() } : null,
-        status: 'PENDING'
+        reason
       });
 
       await apiService.sendNotification({
@@ -75,8 +70,9 @@ export default function BookAppointment() {
 
       setSuccess(true);
     } catch (e) {
-      alert(e.message || 'Failed to book');
+      alert(e.response?.data?.message || e.message || 'Failed to book');
     }
+
     setSubmitting(false);
   };
 
@@ -88,7 +84,7 @@ export default function BookAppointment() {
         </div>
         <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">Booking Successful!</h2>
         <p className="text-slate-500 font-medium mb-12">Your appointment request has been sent to {selectedDoctor?.name}. You'll be notified once it's confirmed.</p>
-        <button 
+        <button
           onClick={() => navigate('/dashboard/my-appointments')}
           className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-600 transition-all shadow-xl shadow-slate-900/20 active:scale-95"
         >
@@ -111,18 +107,16 @@ export default function BookAppointment() {
           {STEPS.map((s, i) => (
             <React.Fragment key={s}>
               <div className="flex items-center gap-3 shrink-0">
-                <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all duration-500 ${
-                  step === i + 1 
-                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 scale-110' 
-                    : step > i + 1 
-                      ? 'bg-emerald-100 text-emerald-600' 
-                      : 'bg-white text-slate-300 border border-slate-200'
-                }`}>
+                <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all duration-500 ${step === i + 1
+                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 scale-110'
+                  : step > i + 1
+                    ? 'bg-emerald-100 text-emerald-600'
+                    : 'bg-white text-slate-300 border border-slate-200'
+                  }`}>
                   {step > i + 1 ? <CheckCircle2 size={18} /> : i + 1}
                 </div>
-                <span className={`text-[10px] uppercase tracking-widest font-black transition-colors ${
-                  step === i + 1 ? 'text-slate-900' : 'text-slate-400'
-                }`}>{s}</span>
+                <span className={`text-[10px] uppercase tracking-widest font-black transition-colors ${step === i + 1 ? 'text-slate-900' : 'text-slate-400'
+                  }`}>{s}</span>
               </div>
               {i < STEPS.length - 1 && <ChevronRight size={16} className="text-slate-200 shrink-0" />}
             </React.Fragment>
@@ -132,7 +126,7 @@ export default function BookAppointment() {
         <div className="min-h-[400px]">
           <AnimatePresence mode="wait">
             {step === 1 && (
-              <motion.div 
+              <motion.div
                 key="step1"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -146,19 +140,18 @@ export default function BookAppointment() {
                     <button
                       key={doc.id}
                       onClick={() => setSelectedDoctor(doc)}
-                      className={`p-2 rounded-3xl border-2 transition-all duration-300 flex items-center gap-6 group relative ${
-                        isSelected 
-                          ? 'border-emerald-600 bg-emerald-50/30 shadow-lg shadow-emerald-900/5' 
-                          : 'border-slate-50 bg-white hover:border-slate-200 hover:shadow-xl hover:shadow-slate-900/5'
-                      }`}
+                      className={`p-2 rounded-3xl border-2 transition-all duration-300 flex items-center gap-6 group relative ${isSelected
+                        ? 'border-emerald-600 bg-emerald-50/30 shadow-lg shadow-emerald-900/5'
+                        : 'border-slate-50 bg-white hover:border-slate-200 hover:shadow-xl hover:shadow-slate-900/5'
+                        }`}
                     >
                       <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 shadow-md">
                         <img src={doc.image_url} alt="" className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
-                         <h3 className="text-md font-black text-slate-900 truncate leading-tight mb-1">{doc.name}</h3>
-                         <p className="text-emerald-600 font-bold uppercase tracking-widest text-[9px] mb-3">{doc.specialization}</p>
-                         <div className={`w-2 h-2 rounded-full ${isSelected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-slate-200'}`} />
+                        <h3 className="text-md font-black text-slate-900 truncate leading-tight mb-1">{doc.name}</h3>
+                        <p className="text-emerald-600 font-bold uppercase tracking-widest text-[9px] mb-3">{doc.specialization}</p>
+                        <div className={`w-2 h-2 rounded-full ${isSelected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-slate-200'}`} />
                       </div>
                       {isSelected && (
                         <div className="absolute top-4 right-4 text-emerald-600">
@@ -172,7 +165,7 @@ export default function BookAppointment() {
             )}
 
             {step === 2 && (
-              <motion.div 
+              <motion.div
                 key="step2"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -189,12 +182,12 @@ export default function BookAppointment() {
                       <p className="text-sm font-black text-slate-700">Choose a consultation date</p>
                     </div>
                   </div>
-                  <input 
-                    type="date" 
+                  <input
+                    type="date"
                     className="premium-input"
-                    value={selectedDate} 
-                    onChange={(e) => setSelectedDate(e.target.value)} 
-                    min={new Date().toISOString().split('T')[0]} 
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    min={new Date().toISOString().split('T')[0]}
                   />
                   <div className="mt-6 flex items-start gap-3 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
                     <AlertCircle size={16} className="text-emerald-600 shrink-0" />
@@ -207,7 +200,7 @@ export default function BookAppointment() {
             )}
 
             {step === 3 && (
-              <motion.div 
+              <motion.div
                 key="step3"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -219,11 +212,10 @@ export default function BookAppointment() {
                     <button
                       key={t}
                       onClick={() => setSelectedTime(t)}
-                      className={`p-6 rounded-3xl font-black uppercase tracking-widest text-[10px] border-2 transition-all duration-300 ${
-                        selectedTime === t 
-                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-105' 
-                          : 'border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-200 hover:bg-white'
-                      }`}
+                      className={`p-6 rounded-3xl font-black uppercase tracking-widest text-[10px] border-2 transition-all duration-300 ${selectedTime === t
+                        ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-105'
+                        : 'border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-200 hover:bg-white'
+                        }`}
                     >
                       {t}
                     </button>
@@ -233,7 +225,7 @@ export default function BookAppointment() {
             )}
 
             {step === 4 && (
-              <motion.div 
+              <motion.div
                 key="step4"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -263,31 +255,30 @@ export default function BookAppointment() {
 
                   <div className="space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Reason for consultation (Optional)</label>
-                    <textarea 
+                    <textarea
                       className="premium-input min-h-[120px] resize-none"
-                      value={reason} 
-                      onChange={(e) => setReason(e.target.value)} 
-                      placeholder="e.g. Chronic headache, routine checkup..." 
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      placeholder="e.g. Chronic headache, routine checkup..."
                     />
                   </div>
 
                   <div className="space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Previous Medical Report (Optional)</label>
-                    <div 
-                      className={`relative p-8 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center gap-4 ${
-                        previousReport ? 'border-emerald-500 bg-emerald-50/30' : 'border-slate-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/10'
-                      }`}
+                    <div
+                      className={`relative p-8 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center gap-4 ${previousReport ? 'border-emerald-500 bg-emerald-50/30' : 'border-slate-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/10'
+                        }`}
                     >
-                      <input 
-                        type="file" 
-                        className="absolute inset-0 opacity-0 cursor-pointer" 
+                      <input
+                        type="file"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
                         onChange={(e) => {
                           const file = e.target.files[0];
                           if (file) {
-                             setPreviousReport({
-                               name: file.name,
-                               size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
-                             });
+                            setPreviousReport({
+                              name: file.name,
+                              size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+                            });
                           }
                         }}
                       />
@@ -300,7 +291,7 @@ export default function BookAppointment() {
                             <p className="text-sm font-black text-slate-900">{previousReport.name}</p>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{previousReport.size}</p>
                           </div>
-                          <button 
+                          <button
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -332,19 +323,18 @@ export default function BookAppointment() {
 
         {/* Footer Navigation */}
         <div className="w-full max-w-xl mx-auto mt-5 border-t border-slate-100 flex items-center justify-around">
-          <button 
+          <button
             onClick={() => setStep(step - 1)}
             disabled={step === 1}
-            className={`flex items-center gap-2 px-4 py-2  rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all ${
-              step === 1 ? 'opacity-0' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+            className={`flex items-center gap-2 px-4 py-2  rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all ${step === 1 ? 'opacity-0' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'
+              }`}
           >
             <ChevronLeft size={16} /> Back
           </button>
 
           <div className="flex items-center gap-5">
             {step < 4 ? (
-              <button 
+              <button
                 onClick={() => setStep(step + 1)}
                 disabled={(step === 1 && !selectedDoctor) || (step === 2 && !selectedDate) || (step === 3 && !selectedTime)}
                 className="btn-premium px-4 md:px-12"
@@ -352,7 +342,7 @@ export default function BookAppointment() {
                 Continue <ChevronRight size={16} />
               </button>
             ) : (
-              <button 
+              <button
                 onClick={handleConfirm}
                 disabled={submitting}
                 className="btn-premium px-4 md:px-12"

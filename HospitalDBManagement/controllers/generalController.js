@@ -187,12 +187,50 @@ exports.getAdminStats = async (req, res) => {
     const completedAppointments = await Appointment.countDocuments({ status: 'COMPLETED' });
     const cancelledAppointments = await Appointment.countDocuments({ status: 'CANCELLED' });
 
-    // Get recent activities
-    const recentAppointments = await Appointment.find({})
+    // Recent activities (formatted)
+    const rawRecent = await Appointment.find({})
       .sort({ createdAt: -1 })
       .limit(5)
       .populate('patientId', 'name')
       .populate('doctorId', 'name');
+
+    const recentAppointments = rawRecent.map(apt => ({
+      id: apt._id,
+      patient_name: apt.patientName || apt.patientId?.name || 'Unknown',
+      doctor_name: apt.doctorName || apt.doctorId?.name || 'Unknown',
+      status: apt.status,
+      date: apt.date
+    }));
+
+    // Data for charts
+    // 1. Appointments per day (Last 7 days)
+    const last7Days = [...Array(7)].map((_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      return d.toISOString().split('T')[0];
+    }).reverse();
+
+    const appointmentsPerDay = await Promise.all(last7Days.map(async (date) => {
+      const count = await Appointment.countDocuments({ date });
+      return { name: date, count };
+    }));
+
+    // 2. Monthly Appointments
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const currentYear = new Date().getFullYear();
+    const monthlyAppointments = await Promise.all(months.map(async (month, index) => {
+      // Simplistic approach: just count for the year
+      const count = await Appointment.countDocuments({
+        date: { $regex: `^${currentYear}-${(index + 1).toString().padStart(2, '0')}` }
+      });
+      return { name: month, count };
+    }));
+
+    // 3. Doctor-wise Appointments (Specialization distribution)
+    const doctorWiseAppointments = await Appointment.aggregate([
+      { $group: { _id: "$specialization", count: { $sum: 1 } } },
+      { $project: { _id: 0, doctor: "$_id", count: 1 } }
+    ]);
 
     res.json({
       totalDoctors: doctorsCount,
@@ -202,7 +240,10 @@ exports.getAdminStats = async (req, res) => {
       pendingAppointments,
       completedAppointments,
       cancelledAppointments,
-      recentAppointments
+      recentAppointments,
+      appointmentsPerDay,
+      monthlyAppointments,
+      doctorWiseAppointments: doctorWiseAppointments.length > 0 ? doctorWiseAppointments : [{ doctor: 'General', count: 0 }]
     });
   } catch (error) {
     console.error('Get Admin Stats Error:', error);

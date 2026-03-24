@@ -107,7 +107,7 @@ export default function AdminDashboard() {
           <div className="w-full h-[250px]">
             {isMounted && (
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={stats.appointmentsPerDay}>
+                <LineChart data={stats?.appointmentsPerDay || []}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} />
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
           <div className="w-full h-[250px]">
             {isMounted && (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.monthlyAppointments}>
+                <BarChart data={stats?.monthlyAppointments || []}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} />
@@ -142,8 +142,8 @@ export default function AdminDashboard() {
             {isMounted && (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={stats.doctorWiseAppointments} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="count" nameKey="doctor">
-                    {stats.doctorWiseAppointments.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} cornerRadius={4} />)}
+                  <Pie data={stats?.doctorWiseAppointments || []} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="count" nameKey="doctor">
+                    {(stats?.doctorWiseAppointments || []).map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} cornerRadius={4} />)}
                   </Pie>
                   <Tooltip contentStyle={{ borderRadius: '6px', border: 'none' }} />
                   <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px', fontWeight: 'bold' }} />

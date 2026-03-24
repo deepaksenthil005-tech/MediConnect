@@ -10,7 +10,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-import { apiService } from "../../services/api";
+import apiService from "../../services/api";
 import ReportViewerModal from "../../components/ReportViewerModal";
 
 export default function Profile() {

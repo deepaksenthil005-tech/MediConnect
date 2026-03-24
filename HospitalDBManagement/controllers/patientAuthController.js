@@ -59,6 +59,9 @@ exports.loginPatient = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
+    console.log("Update Profile Request for ID:", req.user.id);
+    console.log("Update Body:", req.body);
+    
     const patient = await Patient.findById(req.user.id);
     if (!patient) {
       return res.status(404).json({ message: 'Patient not found' });

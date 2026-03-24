@@ -91,3 +91,5 @@ export const apiService = {
     return res.data;
   },
 };
+
+export default apiService;

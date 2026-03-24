@@ -17,7 +17,8 @@ const healthReportSchema = new mongoose.Schema({
     {
       name: { type: String },
       date: { type: String },
-      size: { type: String }
+      size: { type: String },
+      data: { type: String }
     }
   ],
   createdAt: { type: Date, default: Date.now }

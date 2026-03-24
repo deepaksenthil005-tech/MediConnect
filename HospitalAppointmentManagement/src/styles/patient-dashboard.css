@@ -650,18 +650,19 @@
 /* Health metrics */
 .pd-health-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
 
 .pd-metric-card {
   background: var(--card-bg);
-  border-radius: var(--card-radius);
+  border-radius: 5px;
   border: 1px solid var(--card-border);
   box-shadow: var(--card-shadow);
-  padding: 0.5rem;
+  padding: 15px;
   text-align: center;
   transition: box-shadow 0.2s;
+  background-color: var(--primary-light);
 }
 
 .pd-metric-card:hover {

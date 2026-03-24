@@ -202,7 +202,7 @@ export default function AppointmentsManagement() {
                   <div className="flex items-center gap-3 p-2 bg-slate-50 rounded-md border border-slate-100/50">
                     {apt.status === 'PENDING' && (
                       <button
-                        onClick={() => handleStatusUpdate(apt.id, 'CONFIRMED')}
+                        onClick={() => handleStatusUpdate(apt._id, 'CONFIRMED')}
                         className="btn-premium py-4 px-8 text-[10px] gap-2 shadow-emerald-500/10"
                       >
                         <CheckCircle2 size={14} /> Approve
@@ -210,7 +210,7 @@ export default function AppointmentsManagement() {
                     )}
                     {apt.status === 'CONFIRMED' && (
                       <button
-                        onClick={() => handleStatusUpdate(apt.id, 'COMPLETED')}
+                        onClick={() => handleStatusUpdate(apt._id, 'COMPLETED')}
                         className="btn-premium py-4 px-8 text-[10px] gap-2 bg-blue-600 hover:bg-blue-700 shadow-blue-500/10"
                       >
                         <CheckCircle2 size={14} /> Finalize
@@ -218,7 +218,7 @@ export default function AppointmentsManagement() {
                     )}
                     {(apt.status === 'PENDING' || apt.status === 'CONFIRMED') && (
                       <button
-                        onClick={() => handleStatusUpdate(apt.id, 'CANCELLED')}
+                        onClick={() => handleStatusUpdate(apt._id, 'CANCELLED')}
                         className="w-14 h-14 bg-white text-rose-500 border border-slate-100 hover:bg-rose-500 hover:text-white hover:border-rose-500 rounded-md transition-all shadow-sm active:scale-95 flex items-center justify-center p-0"
                       >
                         <XCircle size={20} />
@@ -319,8 +319,8 @@ export default function AppointmentsManagement() {
                                   date: new Date().toLocaleDateString(),
                                   data: reader.result // Store Base64 data
                                 };
-                                await apiService.addMedicalRecord(selectedPatientReport.patient_id, record);
-                                handleViewPatientReport(selectedPatientReport.patient_id);
+                                await apiService.addMedicalRecord(selectedPatientReport.patientId, record);
+                                handleViewPatientReport(selectedPatientReport.patientId);
                               } catch (error) {
                                 console.error('Upload failed:', error);
                                 alert('Failed to upload medical record. Please try again.');

@@ -7,10 +7,8 @@ const {
   getConsultationMessages, addConsultationMessage, getAllConsultations,
   getAdminStats, getPatients, deletePatient
 } = require('../controllers/generalController');
-const { 
-  getAppointments, createAppointment, updateAppointmentStatus, updateAppointment 
-} = require('../controllers/appointmentController');
 const { protectPatient, protectAdmin, protectAny } = require('../middlewares/authMiddleware');
+
 
 
 // Stats & Patients
@@ -19,7 +17,7 @@ router.route('/patients')
   .get(protectAdmin, getPatients);
 router.delete('/patients/:id', protectAdmin, deletePatient);
 
-// Feedback
+// Feedbacks
 router.route('/feedback')
   .get(protectAny, getFeedback)
   .post(protectPatient, submitFeedback);
@@ -42,21 +40,5 @@ router.route('/consultations/:patientId')
   .get(protectAny, getConsultationMessages)
   .post(protectAny, addConsultationMessage);
 
-
-// Appointments
-router.route('/appointments')
-  .get(protectAny, getAppointments)
-  .post(protectPatient, createAppointment);
-
-// Alias for singular
-router.route('/appointment')
-  .get(protectAny, getAppointments)
-  .post(protectPatient, createAppointment);
-
-router.route('/appointments/:id/status')
-  .put(protectAdmin, updateAppointmentStatus);
-
-router.route('/appointments/:id')
-  .put(protectAny, updateAppointment);
-
 module.exports = router;
+

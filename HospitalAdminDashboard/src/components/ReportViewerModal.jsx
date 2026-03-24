@@ -39,13 +39,14 @@ export default function ReportViewerModal({ record, healthData = {}, patientId, 
     .header { background: linear-gradient(135deg, #059669, #10b981); padding: 32px 40px; color: #fff; }
     .header-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #d1fae5; margin-bottom: 6px; }
     .header h1 { font-size: 22px; font-weight: 800; word-break: break-all; }
+    .header h1 a { color: white; text-decoration: underline; word-break: break-all; }
     .header .patient-info { font-size: 13px; color: #a7f3d0; margin-top: 6px; }
     .body { padding: 32px 40px; }
     .section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; margin: 24px 0 12px; }
     .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .meta-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 14px 16px; }
     .meta-card .label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #059669; margin-bottom: 4px; }
-    .meta-card .value { font-size: 16px; font-weight: 700; color: #111827; }
+    .meta-card .value { font-size: 16px; font-weight: 700; color: #111827; word-break: break-word; }
     .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .metric-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; text-align: center; }
     .metric-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 6px; }
@@ -61,13 +62,16 @@ export default function ReportViewerModal({ record, healthData = {}, patientId, 
   <div class="page">
     <div class="header">
       <div class="header-badge">MediConnect — Medical Report</div>
-      <h1>${record.name}</h1>
+      ${record.image || record.url
+        ? `<h1><a href="${record.image || record.url}" target="_blank" rel="noopener noreferrer">${record.name}</a></h1>`
+        : `<h1>${record.name}</h1>`
+      }
       ${patientName ? `<div class="patient-info">Patient: ${patientName}</div>` : ''}
     </div>
     <div class="body">
       <div class="section-title">File Information</div>
       <div class="meta-grid">
-        <div class="meta-card"><div class="label">Date Filed</div><div class="value">${record.date || '—'}</div></div>
+        <div class="meta-card"><div class="label">Date Filed</div><div class="value">${record.date || new Date().toLocaleString("en-IN")}</div></div>
         <div class="meta-card"><div class="label">File Size</div><div class="value">${record.size || '—'}</div></div>
         <div class="meta-card"><div class="label">Patient ID</div><div class="value">#${patientId || '—'}</div></div>
       </div>

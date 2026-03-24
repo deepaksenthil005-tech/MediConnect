@@ -54,45 +54,60 @@ export default function PatientsManagement() {
   };
 
   const handleViewDetails = async (patient) => {
-    setSelectedPatient(patient);
-    setActiveTab("history");
-    const [appointments, health] = await Promise.all([
-      apiService.getAppointments(patient.id, "USER"),
-      apiService.getHealthReport(patient.id),
-    ]);
-    setPatientAppointments(appointments);
-    setPatientHealth(health);
-    setHealthForm({
-      weight: health.weight || "",
-      height: health.height || "",
-      heartRate: health.heartRate || "",
-      bloodOxygen: health.bloodOxygen || "",
-      stressLevel: health.stressLevel || "Low",
-    });
-    setIsDetailsModalOpen(true);
+    try {
+      setSelectedPatient(patient);
+      setActiveTab("history");
+
+      const patientId = patient._id;
+
+      const [appointments, health] = await Promise.all([
+        apiService.getAppointments(),
+        apiService.getHealthReport(patientId),
+      ]);
+
+      const filteredAppointments = appointments.filter(
+        (apt) =>
+          apt.patientId === patientId ||
+          apt.patient_id === patientId ||
+          apt.patient?._id === patientId
+      );
+
+      setPatientAppointments(filteredAppointments);
+      setPatientHealth(health || {});
+
+      setHealthForm({
+        weight: health?.weight || "",
+        height: health?.height || "",
+        heartRate: health?.heartRate || "",
+        bloodOxygen: health?.bloodOxygen || "",
+        stressLevel: health?.stressLevel || "Low",
+      });
+
+      setIsDetailsModalOpen(true);
+    } catch (error) {
+      console.error("View details error:", error.response?.data || error.message);
+    }
   };
 
   const handleDelete = async (id) => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete this patient account? This action cannot be undone.",
-      )
-    ) {
+    try {
       await apiService.deletePatient(id);
-      fetchPatients();
+      setPatients((prev) => prev.filter((patient) => patient._id !== id));
+    } catch (error) {
+      console.error("Delete failed:", error.response?.data || error.message);
     }
   };
 
   const handleSaveHealth = async (e) => {
     e.preventDefault();
-    await apiService.saveHealthReport(selectedPatient.id, {
+    await apiService.saveHealthReport((selectedPatient._id || selectedPatient.id), {
       weight: parseFloat(healthForm.weight) || 0,
       height: parseFloat(healthForm.height) || 0,
       heartRate: parseInt(healthForm.heartRate) || 0,
       bloodOxygen: parseInt(healthForm.bloodOxygen) || 0,
       stressLevel: healthForm.stressLevel,
     });
-    const updated = await apiService.getHealthReport(selectedPatient.id);
+    const updated = await apiService.getHealthReport(selectedPatient._id || selectedPatient.id);
     setPatientHealth(updated);
     setHealthSaved(true);
     setTimeout(() => setHealthSaved(false), 2500);
@@ -105,8 +120,8 @@ export default function PatientsManagement() {
       name: file.name,
       size: (file.size / (1024 * 1024)).toFixed(2) + " MB",
     };
-    await apiService.addMedicalRecord(selectedPatient.id, record);
-    const updated = await apiService.getHealthReport(selectedPatient.id);
+    await apiService.addMedicalRecord(selectedPatient._id, record);
+    const updated = await apiService.getHealthReport(selectedPatient._id);
     setPatientHealth(updated);
   };
 
@@ -115,17 +130,17 @@ export default function PatientsManagement() {
     const reports = JSON.parse(
       localStorage.getItem("mediconnect_health_reports") || "[]",
     );
-    const idx = reports.findIndex((r) => r.patient_id === selectedPatient.id);
+    const idx = reports.findIndex((r) => r.patient_id === selectedPatient._id);
     if (idx !== -1) {
       reports[idx].medicalRecords = (reports[idx].medicalRecords || []).filter(
-        (r) => r.id !== recordId,
+        (r) => r._id !== recordId,
       );
       localStorage.setItem(
         "mediconnect_health_reports",
         JSON.stringify(reports),
       );
     }
-    const updated = await apiService.getHealthReport(selectedPatient.id);
+    const updated = await apiService.getHealthReport(selectedPatient._id || selectedPatient.id);
     setPatientHealth(updated);
   };
 
@@ -287,7 +302,7 @@ export default function PatientsManagement() {
                   <History size={14} /> Full History
                 </button>
                 <button
-                  onClick={() => handleDelete(patient.id)}
+                  onClick={() => handleDelete(patient._id)}
                   className="p-4 bg-rose-50 text-rose-500 rounded-md hover:bg-rose-500 hover:text-white transition-all active:scale-95 border border-rose-100"
                 >
                   <Trash2 size={20} />
@@ -404,14 +419,10 @@ export default function PatientsManagement() {
                         Appointment History
                       </h3>
                       <div className="space-y-3">
-                        {patientAppointments.length === 0 ? (
-                          <p className="text-center py-8 text-slate-500 bg-slate-50 rounded-md border border-dashed border-slate-200">
-                            No appointments found.
-                          </p>
-                        ) : (
+                        {patientAppointments.length > 0 ? (
                           patientAppointments.map((apt) => (
                             <div
-                              key={apt.id}
+                              key={apt._id || apt.id}
                               className="flex items-center justify-between p-4 rounded-md bg-white border border-slate-100 shadow-sm"
                             >
                               <div className="flex items-center space-x-3">
@@ -420,20 +431,27 @@ export default function PatientsManagement() {
                                 </div>
                                 <div>
                                   <p className="text-sm font-bold text-slate-900">
-                                    with {apt.doctor_name}
+                                    with {apt.doctor_name || apt.doctorName || apt.doctor?.name || "Unknown Doctor"}
                                   </p>
                                   <p className="text-xs text-slate-500">
-                                    {apt.date} at {apt.time}
+                                    {(apt.date || "No date")} at {(apt.time || "No time")}
                                   </p>
                                 </div>
                               </div>
                               <div
-                                className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${apt.status === "COMPLETED" ? "bg-emerald-100 text-emerald-700" : apt.status === "CANCELLED" ? "bg-rose-100 text-rose-700" : "bg-blue-100 text-blue-700"}`}
+                                className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${apt.status === "COMPLETED"
+                                  ? "bg-emerald-100 text-emerald-700"
+                                  : apt.status === "CANCELLED"
+                                    ? "bg-rose-100 text-rose-700"
+                                    : "bg-blue-100 text-blue-700"
+                                  }`}
                               >
-                                {apt.status}
+                                {apt.status || "PENDING"}
                               </div>
                             </div>
                           ))
+                        ) : (
+                          <p className="text-sm text-slate-500">No appointments found.</p>
                         )}
                       </div>
                     </div>
@@ -587,7 +605,7 @@ export default function PatientsManagement() {
                                   View Report
                                 </button>
                                 <button
-                                  onClick={() => handleDeleteRecord(record.id)}
+                                  onClick={() => handleDeleteRecord(record._id)}
                                   className="p-2 bg-rose-50 text-rose-500 rounded-md hover:bg-rose-500 hover:text-white transition-all"
                                 >
                                   <Trash2 size={14} />
@@ -620,7 +638,7 @@ export default function PatientsManagement() {
         <ReportViewerModal
           record={viewingRecord}
           healthData={patientHealth}
-          patientId={selectedPatient?.id}
+          patientId={selectedPatient?.id || selectedPatient?._id}
           patientName={selectedPatient?.name}
           onClose={() => setViewingRecord(null)}
         />

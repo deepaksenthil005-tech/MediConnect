@@ -18,7 +18,8 @@ export default function HealthReport() {
     height: '',
     heartRate: '',
     bloodOxygen: '',
-    stressLevel: 'Low'
+    stressLevel: 'Low',
+    medicalRecords: [],
   });
 
   useEffect(() => {
@@ -30,11 +31,12 @@ export default function HealthReport() {
     apiService.getHealthReport(user.id).then(data => {
       setReport(data);
       setFormData({
-        weight: data.weight,
-        height: data.height,
-        heartRate: data.heartRate,
-        bloodOxygen: data.bloodOxygen,
-        stressLevel: data.stressLevel
+        weight: data.weight || "",
+        height: data.height || "",
+        heartRate: data.heartRate || "",
+        bloodOxygen: data.bloodOxygen || "",
+        stressLevel: data.stressLevel || "",
+        medicalRecords: data.medicalRecords || [],
       });
       setLoading(false);
     });
@@ -47,7 +49,7 @@ export default function HealthReport() {
       weight: parseFloat(formData.weight),
       height: parseFloat(formData.height),
       heartRate: parseInt(formData.heartRate),
-      bloodOxygen: parseInt(formData.bloodOxygen)
+      bloodOxygen: parseInt(formData.bloodOxygen),
     });
     setShowUpdateModal(false);
     refreshData();
@@ -62,7 +64,7 @@ export default function HealthReport() {
       size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
     };
 
-    await apiService.addMedicalRecord(user.id, record);
+    await apiService.addMedicalRecord(user._id, record);
     refreshData();
   };
 
@@ -172,6 +174,7 @@ export default function HealthReport() {
 
   const bmi = report.height ? (report.weight / ((report.height / 100) ** 2)).toFixed(1) : '—';
   const bmiTrendData = (report.bmiHistory || []).map((p) => ({ name: p.label, value: p.value }));
+  const imageUrl = `${import.meta.env.VITE_API_URL}/files/${record._id}`;
 
   return (
     <>
@@ -186,33 +189,33 @@ export default function HealthReport() {
 
         <div className="pd-health-grid">
           <div className="pd-metric-card">
-            <Scale size={24} style={{ color: 'var(--text-muted)', marginBottom: 4 }} />
+            <Scale size={24} style={{ color: 'var(--text-muted,#3b82f6)', marginBottom: 4 }} />
             <div className="pd-metric-card-label">Weight</div>
             <div className="pd-metric-card-value font-bold">{report.weight} kg</div>
           </div>
           <div className="pd-metric-card">
-            <Ruler size={24} style={{ color: 'var(--text-muted)', marginBottom: 4 }} />
+            <Ruler size={24} style={{ color: 'var(--text-muted,#6366f1)', marginBottom: 4 }} />
             <div className="pd-metric-card-label">Height</div>
             <div className="pd-metric-card-value font-bold">{report.height} cm</div>
           </div>
           <div className="pd-metric-card">
-            <Activity size={24} style={{ color: 'var(--text-muted)', marginBottom: 4 }} />
+            <Activity size={24} style={{ color: 'var(--text-muted,#f59e0b)', marginBottom: 4 }} />
             <div className="pd-metric-card-label">BMI</div>
             <div className="pd-metric-card-value font-bold">BMI = {bmi}</div>
             <span className="pd-metric-card-status normal">Normal</span>
           </div>
           <div className="pd-metric-card">
-            <Heart size={24} style={{ color: 'var(--danger)', marginBottom: 4 }} />
+            <Heart size={24} style={{ color: 'var(--danger,#ef4444)', marginBottom: 4 }} />
             <div className="pd-metric-card-label">Heart Rate</div>
             <div className="pd-metric-card-value font-bold">{report.heartRate} bpm</div>
           </div>
           <div className="pd-metric-card">
-            <Droplets size={24} style={{ color: 'var(--success)', marginBottom: 4 }} />
+            <Droplets size={24} style={{ color: 'var(--success,#10b981)', marginBottom: 4 }} />
             <div className="pd-metric-card-label">Blood Oxygen (SpO2)</div>
             <div className="pd-metric-card-value font-bold">{report.bloodOxygen}%</div>
           </div>
           <div className="pd-metric-card">
-            <Brain size={24} style={{ color: 'var(--warning)', marginBottom: 4 }} />
+            <Brain size={24} style={{ color: 'var(--warning,#8b5cf6)', marginBottom: 4 }} />
             <div className="pd-metric-card-label">Stress Level</div>
             <div className="pd-metric-card-value font-bold">{report.stressLevel}</div>
           </div>
@@ -239,51 +242,51 @@ export default function HealthReport() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
                 <div className="pd-form-group">
                   <label className="pd-form-label">Weight (kg)</label>
-                  <input 
-                    type="number" 
+                  <input
+                    type="number"
                     step="0.1"
-                    className="pd-form-input" 
-                    value={formData.weight} 
-                    onChange={e => setFormData({...formData, weight: e.target.value})}
+                    className="pd-form-input"
+                    value={formData.weight}
+                    onChange={e => setFormData({ ...formData, weight: e.target.value })}
                     required
                   />
                 </div>
                 <div className="pd-form-group">
                   <label className="pd-form-label">Height (cm)</label>
-                  <input 
-                    type="number" 
-                    className="pd-form-input" 
-                    value={formData.height} 
-                    onChange={e => setFormData({...formData, height: e.target.value})}
+                  <input
+                    type="number"
+                    className="pd-form-input"
+                    value={formData.height}
+                    onChange={e => setFormData({ ...formData, height: e.target.value })}
                     required
                   />
                 </div>
                 <div className="pd-form-group">
                   <label className="pd-form-label">Heart Rate (bpm)</label>
-                  <input 
-                    type="number" 
-                    className="pd-form-input" 
-                    value={formData.heartRate} 
-                    onChange={e => setFormData({...formData, heartRate: e.target.value})}
+                  <input
+                    type="number"
+                    className="pd-form-input"
+                    value={formData.heartRate}
+                    onChange={e => setFormData({ ...formData, heartRate: e.target.value })}
                     required
                   />
                 </div>
                 <div className="pd-form-group">
                   <label className="pd-form-label">Blood Oxygen (%)</label>
-                  <input 
-                    type="number" 
-                    className="pd-form-input" 
-                    value={formData.bloodOxygen} 
-                    onChange={e => setFormData({...formData, bloodOxygen: e.target.value})}
+                  <input
+                    type="number"
+                    className="pd-form-input"
+                    value={formData.bloodOxygen}
+                    onChange={e => setFormData({ ...formData, bloodOxygen: e.target.value })}
                     required
                   />
                 </div>
                 <div className="pd-form-group" style={{ gridColumn: 'span 2' }}>
                   <label className="pd-form-label">Stress Level</label>
-                  <select 
-                    className="pd-form-input" 
-                    value={formData.stressLevel} 
-                    onChange={e => setFormData({...formData, stressLevel: e.target.value})}
+                  <select
+                    className="pd-form-input"
+                    value={formData.stressLevel}
+                    onChange={e => setFormData({ ...formData, stressLevel: e.target.value })}
                   >
                     <option value="Low">Low</option>
                     <option value="Normal">Normal</option>
@@ -320,40 +323,70 @@ export default function HealthReport() {
           <h3 className="pd-card-title" style={{ margin: 0 }}>Medical Records & Reports</h3>
         </div>
 
-        <div className="pd-record-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+        <div
+          className="pd-record-list"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '1rem'
+          }}
+        >
           {report.medicalRecords && report.medicalRecords.length > 0 ? (
             report.medicalRecords.map((record) => (
-              <div key={record.id} className="pd-record-card" style={{ 
-                padding: '12px', 
-                marginBottom: '10px',
-                background: 'var(--bg-secondary)', 
-                borderRadius: '1rem', 
-                border: '1px solid var(--card-border)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem'
-              }}>
-                <div style={{ 
-                  width: '40px', 
-                  height: '40px', 
-                  borderRadius: '10px', 
-                  background: 'var(--card-bg)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: 'var(--primary)',
-                  boxShadow: 'var(--card-shadow)'
-                }}>
+              <div
+                key={record._id}
+                className="pd-record-card"
+                style={{
+                  padding: '12px',
+                  marginBottom: '10px',
+                  background: 'var(--bg-secondary)',
+                  borderRadius: '1rem',
+                  border: '1px solid var(--card-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem'
+                }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    background: 'var(--card-bg)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--primary)',
+                    boxShadow: 'var(--card-shadow)'
+                  }}
+                >
                   <FileText size={20} />
                 </div>
+
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div
+                    style={{
+                      fontWeight: 700,
+                      fontSize: '0.875rem',
+                      color: 'var(--text-main)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
                     {record.name}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {record.date} • {record.size}
+
+                  <div
+                    style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--text-muted)'
+                    }}
+                  >
+                    {record.size}
                   </div>
                 </div>
+
                 <div style={{ display: 'flex', gap: '4px' }}>
                   <button
                     className="pd-btn-icon"
@@ -363,11 +396,12 @@ export default function HealthReport() {
                   >
                     <ExternalLink size={16} />
                   </button>
+
                   <button
                     className="pd-btn-icon"
                     style={{ padding: '6px', borderRadius: '8px', color: 'var(--danger)' }}
                     title="Delete"
-                    onClick={() => handleDeleteRecord(record.id)}
+                    onClick={() => handleDeleteRecord(record._id)}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -375,7 +409,17 @@ export default function HealthReport() {
               </div>
             ))
           ) : (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--text-muted)', background: 'var(--bg-secondary)', borderRadius: '1rem', border: '1px dashed var(--card-border)' }}>
+            <div
+              style={{
+                gridColumn: '1 / -1',
+                textAlign: 'center',
+                padding: '3rem',
+                color: 'var(--text-muted)',
+                background: 'var(--bg-secondary)',
+                borderRadius: '1rem',
+                border: '1px dashed var(--card-border)'
+              }}
+            >
               <FileText size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
               <p>No medical records uploaded yet.</p>
             </div>
@@ -388,7 +432,7 @@ export default function HealthReport() {
         <ReportViewerModal
           record={viewingRecord}
           healthData={report}
-          patientId={user?.id}
+          patientId={user?.id || user?._id}
           patientName={user?.name}
           onClose={() => setViewingRecord(null)}
         />

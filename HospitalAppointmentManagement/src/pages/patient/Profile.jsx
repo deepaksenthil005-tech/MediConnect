@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { Camera, Mail, Phone, Calendar, User, FileText, CheckCircle2, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import {
+  Camera,
+  Mail,
+  Phone,
+  Calendar,
+  User,
+  FileText,
+  CheckCircle2,
+  ArrowRight,
+} from "lucide-react";
 import { apiService } from "../../services/api";
-import ReportViewerModal from '../../components/ReportViewerModal';
+import ReportViewerModal from "../../components/ReportViewerModal";
 
 export default function Profile() {
   const { user, updateUser } = useAuth();
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    age: '',
-    gender: '',
-    medical_history: '',
+    name: "",
+    email: "",
+    phone: "",
+    age: "",
+    gender: "",
+    medicalHistory: "",
   });
 
   const [healthReports, setHealthReports] = useState([]);
@@ -23,14 +32,14 @@ export default function Profile() {
   useEffect(() => {
     if (user) {
       setForm({
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || 'Not provided',
-        age: user.age || 'N/A',
-        gender: user.gender || 'Not specified',
-        medical_history: user.medical_history || 'No history recorded.',
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "Not provided",
+        age: user.age || "N/A",
+        gender: user.gender || "Not specified",
+        medicalHistory: user.medicalHistory || "No history recorded.",
       });
-      apiService.getHealthReport(user.id).then(data => {
+      apiService.getHealthReport(user.id).then((data) => {
         setHealthReports(data.medicalRecords || []);
         setFullHealthData(data);
       });
@@ -46,12 +55,12 @@ export default function Profile() {
     e.preventDefault();
     try {
       const updatedUser = await apiService.updateUser(user.id, form);
-      updateUser(updatedUser);
+      updateUser(updatedUser.user);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {
-      console.error('Failed to update profile:', error);
-      alert('Failed to update profile. Please try again.');
+      console.error("Failed to update profile:", error);
+      alert("Failed to update profile. Please try again.");
     }
   };
 
@@ -59,8 +68,12 @@ export default function Profile() {
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Patient Profile</h1>
-          <p className="text-slate-500 font-medium mt-1">Manage your health dossier and personal information.</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            Patient Profile
+          </h1>
+          <p className="text-slate-500 font-medium mt-1">
+            Manage your health dossier and personal information.
+          </p>
         </div>
       </div>
 
@@ -69,14 +82,20 @@ export default function Profile() {
         <div className="lg:col-span-1 space-y-8">
           <div className="bg-white p-3 rounded-md border border-slate-100 shadow-md shadow-slate-200/50 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-700" />
-            
+
             <div className="relative flex flex-col items-center">
               <div className="relative mb-6">
                 <div className="w-32 h-32 rounded-md bg-slate-100 border-4 border-white shadow-md overflow-hidden flex items-center justify-center">
                   {user?.image_url ? (
-                    <img src={user.image_url} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={user.image_url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
-                    <span className="text-4xl font-black text-slate-300">{user?.name?.[0] || 'P'}</span>
+                    <span className="text-4xl font-black text-slate-300">
+                      {user?.name?.[0] || "P"}
+                    </span>
                   )}
                 </div>
                 <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-emerald-600 rounded-md shadow-sm border-4 border-white flex items-center justify-center text-white">
@@ -84,7 +103,9 @@ export default function Profile() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-black text-slate-900 text-center">{user?.name || 'Patient'}</h2>
+              <h2 className="text-2xl font-black text-slate-900 text-center">
+                {user?.name || "Patient"}
+              </h2>
               <p className="text-emerald-600 font-bold uppercase tracking-widest text-[10px] mt-1 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
                 USER
               </p>
@@ -95,8 +116,12 @@ export default function Profile() {
                     <Mail className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email Address</label>
-                    <p className="text-sm font-bold text-slate-900 break-all">{user?.email}</p>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                      Email Address
+                    </label>
+                    <p className="text-sm font-bold text-slate-900 break-all">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
 
@@ -105,22 +130,34 @@ export default function Profile() {
                     <Phone className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Phone Number</label>
-                    <p className="text-sm font-bold text-slate-900">{form.phone}</p>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                      Phone Number
+                    </label>
+                    <p className="text-sm font-bold text-slate-900">
+                      {form.phone}
+                    </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-start gap-4 p-4 rounded-md hover:bg-slate-50 transition-colors">
                     <div>
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Age</label>
-                      <p className="text-sm font-bold text-slate-900">{form.age} Yrs</p>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        Age
+                      </label>
+                      <p className="text-sm font-bold text-slate-900">
+                        {form.age} Yrs
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 p-4 rounded-md hover:bg-slate-50 transition-colors">
                     <div>
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gender</label>
-                      <p className="text-sm font-bold text-slate-900">{form.gender}</p>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        Gender
+                      </label>
+                      <p className="text-sm font-bold text-slate-900">
+                        {form.gender}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -130,11 +167,14 @@ export default function Profile() {
                     <FileText className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Medical History</label>
-                    <p className="text-xs font-bold text-slate-500 line-clamp-2">{form.medical_history}</p>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                      Medical History
+                    </label>
+                    <p className="text-xs font-bold text-slate-500 line-clamp-2">
+                      {form.medicalHistory}
+                    </p>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -144,7 +184,9 @@ export default function Profile() {
         <div className="lg:col-span-2">
           <div className="bg-white p-3 rounded-md border border-slate-100 shadow-md shadow-slate-200/50">
             <div className="flex items-center justify-between mb-10">
-              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Edit Profile</h3>
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                Edit Profile
+              </h3>
               <div className="flex items-center gap-2">
                 <input
                   type="file"
@@ -164,8 +206,10 @@ export default function Profile() {
                     }
                   }}
                 />
-                <button 
-                  onClick={() => document.getElementById('profile-photo-input').click()}
+                <button
+                  onClick={() =>
+                    document.getElementById("profile-photo-input").click()
+                  }
                   className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-md hover:bg-emerald-600 transition-all font-black uppercase tracking-widest text-[10px] shadow-sm shadow-slate-900/20"
                 >
                   <Camera className="h-4 w-4" />
@@ -177,7 +221,9 @@ export default function Profile() {
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Full Name</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                    Full Name
+                  </label>
                   <input
                     name="name"
                     value={form.name}
@@ -187,7 +233,9 @@ export default function Profile() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Email Address</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                    Email Address
+                  </label>
                   <input
                     disabled
                     value={form.email}
@@ -195,12 +243,16 @@ export default function Profile() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Phone Number</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                    Phone Number
+                  </label>
                   <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">+91</span>
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">
+                      +91
+                    </span>
                     <input
                       name="phone"
-                      value={form.phone.replace('+91 ', '')}
+                      value={form.phone.replace("+91 ", "")}
                       onChange={handleChange}
                       className="w-full pl-16 pr-6 py-4 rounded-md bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 transition-all font-bold text-slate-900"
                       placeholder="1234567890"
@@ -208,7 +260,9 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Age</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                    Age
+                  </label>
                   <input
                     name="age"
                     type="number"
@@ -221,17 +275,19 @@ export default function Profile() {
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Gender Selection</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                  Gender Selection
+                </label>
                 <div className="flex gap-4">
-                  {['Male', 'Female', 'Other'].map((g) => (
+                  {["Male", "Female", "Other"].map((g) => (
                     <button
                       key={g}
                       type="button"
-                      onClick={() => setForm(f => ({ ...f, gender: g }))}
+                      onClick={() => setForm((f) => ({ ...f, gender: g }))}
                       className={`flex-1 py-4 rounded-md border transition-all font-black text-xs uppercase tracking-widest ${
-                        form.gender === g 
-                          ? 'bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20' 
-                          : 'bg-white border-slate-100 text-slate-500 hover:border-slate-300'
+                        form.gender === g
+                          ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20"
+                          : "bg-white border-slate-100 text-slate-500 hover:border-slate-300"
                       }`}
                     >
                       {g}
@@ -241,11 +297,13 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Medical History</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">
+                  Medical History
+                </label>
                 <textarea
-                  name="medical_history"
+                  name="medicalHistory"
                   rows={4}
-                  value={form.medical_history}
+                  value={form.medicalHistory}
                   onChange={handleChange}
                   className="w-full px-6 py-4 rounded-md bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 transition-all font-bold text-slate-900"
                   placeholder="Allergies, conditions, previous surgeries..."
@@ -256,52 +314,63 @@ export default function Profile() {
                 <button
                   type="submit"
                   className={`px-10 py-4 rounded-md transition-all font-black uppercase tracking-widest text-sm ${
-                    saved 
-                      ? 'bg-emerald-500 text-white shadow-emerald-500/20' 
-                      : 'bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20'
+                    saved
+                      ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                      : "bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20"
                   } shadow-md active:scale-95`}
                 >
-                  {saved ? 'Changes Applied' : 'Save Changes'}
+                  {saved ? "Changes Applied" : "Save Changes"}
                 </button>
               </div>
             </form>
           </div>
 
           <div className="mt-8 bg-white p-3 rounded-md border border-slate-100 shadow-md shadow-slate-200/50">
-             <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-black text-slate-900 tracking-tight">Clinical Documents</h3>
-                <div className="p-1 bg-slate-50 text-slate-400 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-100 italic">
-                   {healthReports.length} Digitized Logs
-                </div>
-             </div>
-             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {healthReports.length > 0 ? (
-                  healthReports.map((report) => (
-                    <div key={report.id} className="p-6 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-between group hover:bg-white hover:shadow-md transition-all">
-                       <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center shadow-sm group-hover:bg-emerald-50 transition-colors">
-                             <FileText className="text-emerald-600" size={24} />
-                          </div>
-                          <div>
-                             <p className="text-sm font-black text-slate-900">{report.name}</p>
-                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{report.date} • {report.size}</p>
-                          </div>
-                       </div>
-                       <button 
-                         onClick={() => setViewingRecord(report)}
-                         className="p-3 text-slate-300 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-all"
-                       >
-                          <ArrowRight size={20} />
-                       </button>
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                Clinical Documents
+              </h3>
+              <div className="p-1 bg-slate-50 text-slate-400 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-100 italic">
+                {healthReports.length} Digitized Logs
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {healthReports.length > 0 ? (
+                healthReports.map((report) => (
+                  <div
+                    key={report.id}
+                    className="p-6 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-between group hover:bg-white hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center shadow-sm group-hover:bg-emerald-50 transition-colors">
+                        <FileText className="text-emerald-600" size={24} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-slate-900">
+                          {report.name}
+                        </p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                          {report.date} • {report.size}
+                        </p>
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="col-span-2 py-12 text-center border-4 border-dashed border-slate-100 rounded-md">
-                     <p className="text-slate-400 font-black uppercase tracking-widest text-[10px]">No laboratory results found.</p>
+                    <button
+                      onClick={() => setViewingRecord(report)}
+                      className="p-3 text-slate-300 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-all"
+                    >
+                      <ArrowRight size={20} />
+                    </button>
                   </div>
-                )}
-             </div>
+                ))
+              ) : (
+                <div className="col-span-2 py-12 text-center border-4 border-dashed border-slate-100 rounded-md">
+                  <p className="text-slate-400 font-black uppercase tracking-widest text-[10px]">
+                    No laboratory results found.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

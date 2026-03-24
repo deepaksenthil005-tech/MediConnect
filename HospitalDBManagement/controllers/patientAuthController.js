@@ -56,3 +56,39 @@ exports.loginPatient = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.user.id);
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    const { name, phone, age, gender, medicalHistory, imageUrl } = req.body;
+    
+    if (name) patient.name = name;
+    if (phone) patient.phone = phone;
+    if (age) patient.age = age;
+    if (gender) patient.gender = gender;
+    if (medicalHistory) patient.medicalHistory = medicalHistory;
+    if (imageUrl) patient.imageUrl = imageUrl;
+
+    const updatedPatient = await patient.save();
+
+    res.json({
+      user: {
+        id: updatedPatient._id,
+        name: updatedPatient.name,
+        email: updatedPatient.email,
+        role: 'USER',
+        imageUrl: updatedPatient.imageUrl,
+        phone: updatedPatient.phone,
+        age: updatedPatient.age,
+        gender: updatedPatient.gender,
+        medicalHistory: updatedPatient.medicalHistory
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

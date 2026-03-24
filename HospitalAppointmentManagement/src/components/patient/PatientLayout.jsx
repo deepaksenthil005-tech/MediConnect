@@ -232,13 +232,14 @@ export default function PatientLayout() {
                 className="flex items-center gap-3 p-1.5 pr-4 rounded-md bg-slate-900 border border-slate-900 hover:bg-emerald-600 hover:border-emerald-600 transition-all h-auto shadow-md shadow-slate-900/10"
               >
                 <div className="w-9 h-9 rounded-md bg-emerald-100 border border-emerald-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
-                  {user?.image_url ? (
+                  {user?.imageUrl ? (
                     <img
-                      src={user.image_url}
+                      src={user.imageUrl}
                       alt=""
                       className="w-full h-full object-cover"
                     />
                   ) : (
+
                     <span className="text-emerald-600 font-black text-sm">
                       {user?.name?.[0] || "P"}
                     </span>

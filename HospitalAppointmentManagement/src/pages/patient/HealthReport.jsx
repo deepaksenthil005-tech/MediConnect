@@ -64,19 +64,19 @@ export default function HealthReport() {
       size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
     };
 
-    await apiService.addMedicalRecord(user._id, record);
+    await apiService.addMedicalRecord(user.id, record);
     refreshData();
   };
 
   const handleDeleteRecord = async (recordId) => {
     if (!window.confirm('Remove this medical record?')) return;
-    const reports = JSON.parse(localStorage.getItem('mediconnect_health_reports') || '[]');
-    const idx = reports.findIndex((r) => r.patient_id === user.id);
-    if (idx !== -1) {
-      reports[idx].medicalRecords = (reports[idx].medicalRecords || []).filter((r) => r.id !== recordId);
-      localStorage.setItem('mediconnect_health_reports', JSON.stringify(reports));
+    try {
+      await apiService.deleteMedicalRecord(user.id, recordId);
+      refreshData();
+    } catch (error) {
+      console.error("Failed to delete record:", error);
+      alert("Failed to delete record. Please try again.");
     }
-    refreshData();
   };
 
   const handleDownloadReport = (record) => {
@@ -174,7 +174,6 @@ export default function HealthReport() {
 
   const bmi = report.height ? (report.weight / ((report.height / 100) ** 2)).toFixed(1) : '—';
   const bmiTrendData = (report.bmiHistory || []).map((p) => ({ name: p.label, value: p.value }));
-  const imageUrl = `${import.meta.env.VITE_API_URL}/files/${record._id}`;
 
   return (
     <>
@@ -305,7 +304,7 @@ export default function HealthReport() {
 
       <div className="pd-card">
         <h3 className="pd-card-title">BMI Trend</h3>
-        <div style={{ height: 260 }}>
+        <div style={{ height: 260, minWidth: 0 }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={bmiTrendData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />

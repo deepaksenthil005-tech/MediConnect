@@ -184,7 +184,7 @@ export default function PatientDashboardHome() {
               <TrendingUp size={18} className="text-emerald-500" />
             </div>
           </div>
-          <div style={{ height: 280 }}>
+          <div style={{ height: 280, minWidth: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={appointmentsPerDay}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -217,7 +217,7 @@ export default function PatientDashboardHome() {
               <Calendar size={18} className="text-blue-500" />
             </div>
           </div>
-          <div style={{ height: 280 }}>
+          <div style={{ height: 280, minWidth: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -242,8 +242,8 @@ export default function PatientDashboardHome() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {healthReport?.medicalRecords?.length > 0 ? (
-              healthReport.medicalRecords.slice(-4).reverse().map((record) => (
-                <div key={record.id} className="p-4 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-between group hover:bg-white hover:shadow-md transition-all">
+              healthReport.medicalRecords.slice(-4).reverse().map((record, index) => (
+                <div key={record._id || index} className="p-4 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-between group hover:bg-white hover:shadow-md transition-all">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center">
                       <FileText size={20} />

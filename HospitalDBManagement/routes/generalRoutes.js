@@ -3,7 +3,7 @@ const router = express.Router();
 const { 
   getFeedback, submitFeedback,
   getNotifications, sendNotification,
-  getHealthReport, saveHealthReport, addMedicalRecord,
+  getHealthReport, saveHealthReport, addMedicalRecord, deleteMedicalRecord,
   getConsultationMessages, addConsultationMessage, getAllConsultations,
   getAdminStats, getPatients, deletePatient
 } = require('../controllers/generalController');
@@ -31,7 +31,10 @@ router.route('/notifications')
 router.route('/reports/:patientId')
   .get(protectAny, getHealthReport)
   .put(protectAdmin, saveHealthReport);
-router.post('/reports/:patientId/records', protectAdmin, addMedicalRecord);
+router.route('/reports/:patientId/records')
+  .post(protectAny, addMedicalRecord);
+
+router.delete('/reports/:patientId/records/:recordId', protectAny, deleteMedicalRecord);
 
 // Consultations
 router.route('/consultations')

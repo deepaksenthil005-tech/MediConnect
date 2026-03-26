@@ -239,7 +239,7 @@ export default function BookAppointment() {
               >
                 <div className="bg-slate-50 p-3 rounded-[5px] border border-slate-100 space-y-8">
                   <div className="flex flex-col md:flex-row gap-6 p-6 bg-white rounded-3xl border border-slate-200 ">
-                    <img src={selectedDoctor?.image_url} alt="" className="w-20 h-20 rounded-2xl object-cover" />
+                    <img src={selectedDoctor?.imageUrl} alt="" className="w-20 h-20 rounded-2xl object-cover" />
                     <div className="flex-1">
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Confirming Appointment with</p>
                       <h4 className="text-xl font-black text-slate-900 mb-1">{selectedDoctor?.name}</h4>

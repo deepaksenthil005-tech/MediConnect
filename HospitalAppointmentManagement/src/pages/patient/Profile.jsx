@@ -86,9 +86,9 @@ export default function Profile() {
             <div className="relative flex flex-col items-center">
               <div className="relative mb-6">
                 <div className="w-32 h-32 rounded-md bg-slate-100 border-4 border-white shadow-md overflow-hidden flex items-center justify-center">
-                  {user?.image_url ? (
+                  {user?.imageUrl ? (
                     <img
-                      src={user.image_url}
+                      src={user.imageUrl}
                       alt=""
                       className="w-full h-full object-cover"
                     />
@@ -199,8 +199,12 @@ export default function Profile() {
                       const reader = new FileReader();
                       reader.onloadend = async () => {
                         const base64 = reader.result;
-                        await apiService.updateUserPhoto(user.id, base64);
-                        window.location.reload();
+                        const response = await apiService.updateUserPhoto(user.id, base64);
+                        if (response.user) {
+                          updateUser(response.user);
+                        } else {
+                          window.location.reload();
+                        }
                       };
                       reader.readAsDataURL(file);
                     }
@@ -284,11 +288,10 @@ export default function Profile() {
                       key={g}
                       type="button"
                       onClick={() => setForm((f) => ({ ...f, gender: g }))}
-                      className={`flex-1 py-4 rounded-md border transition-all font-black text-xs uppercase tracking-widest ${
-                        form.gender === g
+                      className={`flex-1 py-4 rounded-md border transition-all font-black text-xs uppercase tracking-widest ${form.gender === g
                           ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20"
                           : "bg-white border-slate-100 text-slate-500 hover:border-slate-300"
-                      }`}
+                        }`}
                     >
                       {g}
                     </button>
@@ -313,11 +316,10 @@ export default function Profile() {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className={`px-10 py-4 rounded-md transition-all font-black uppercase tracking-widest text-sm ${
-                    saved
+                  className={`px-10 py-4 rounded-md transition-all font-black uppercase tracking-widest text-sm ${saved
                       ? "bg-emerald-500 text-white shadow-emerald-500/20"
                       : "bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20"
-                  } shadow-md active:scale-95`}
+                    } shadow-md active:scale-95`}
                 >
                   {saved ? "Changes Applied" : "Save Changes"}
                 </button>

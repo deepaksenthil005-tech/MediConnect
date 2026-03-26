@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Feedback = require('../models/Feedback');
 const Notification = require('../models/Notification');
 const HealthReport = require('../models/HealthReport');
@@ -111,12 +112,46 @@ exports.saveHealthReport = async (req, res) => {
  */
 exports.addMedicalRecord = async (req, res) => {
   try {
-    const report = await HealthReport.findOne({ patientId: req.params.patientId });
+    const { patientId } = req.params;
+
+    // Auth check: Patient can only add to their own report
+    if (req.user && req.user.id !== patientId) {
+      return res.status(403).json({ message: 'Not authorized to update this report' });
+    }
+
+    const report = await HealthReport.findOne({ patientId });
     if (!report) return res.status(404).json({ message: 'Report not found' });
 
     report.medicalRecords.push(req.body);
     await report.save();
     res.json(report.medicalRecords[report.medicalRecords.length - 1]);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+/**
+ * @desc    Delete a medical record from patient's health report
+ * @route   DELETE /api/reports/:patientId/records/:recordId
+ * @access  Private (Patient/Admin)
+ */
+exports.deleteMedicalRecord = async (req, res) => {
+  try {
+    const { patientId, recordId } = req.params;
+
+    // Auth check: Patient can only delete from their own report
+    if (req.user && req.user.id !== patientId) {
+      return res.status(403).json({ message: 'Not authorized to update this report' });
+    }
+
+    const report = await HealthReport.findOne({ patientId });
+    if (!report) return res.status(404).json({ message: 'Report not found' });
+
+    report.medicalRecords = report.medicalRecords.filter(
+      (record) => record._id.toString() !== recordId
+    );
+    await report.save();
+    res.json({ message: 'Record deleted successfully' });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

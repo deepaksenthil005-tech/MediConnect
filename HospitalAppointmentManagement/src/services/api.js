@@ -58,6 +58,10 @@ export const apiService = {
     const res = await api.put(`/appointments/${id}`, data);
     return res.data;
   },
+  updateAppointmentStatus: async (id, status) => {
+    const res = await api.put(`/appointments/${id}`, { status });
+    return res.data;
+  },
 
   // --- FEEDBACK ---
   getFeedback: async () => {
@@ -78,6 +82,18 @@ export const apiService = {
   // --- HEALTH REPORTS ---
   getHealthReport: async (patientId) => {
     const res = await api.get(`/reports/${patientId}`);
+    return res.data;
+  },
+  saveHealthReport: async (patientId, data) => {
+    const res = await api.post(`/reports/${patientId}`, data);
+    return res.data;
+  },
+  addMedicalRecord: async (patientId, data) => {
+    const res = await api.post(`/reports/${patientId}/records`, data);
+    return res.data;
+  },
+  deleteMedicalRecord: async (patientId, recordId) => {
+    const res = await api.delete(`/reports/${patientId}/records/${recordId}`);
     return res.data;
   },
 

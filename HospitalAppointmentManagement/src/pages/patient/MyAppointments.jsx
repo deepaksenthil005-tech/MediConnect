@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from "../../services/api";
 import { motion, AnimatePresence } from 'motion/react';
@@ -8,6 +9,7 @@ const STATUS_CLASS = { PENDING: 'pending', CONFIRMED: 'confirmed', COMPLETED: 'c
 
 export default function MyAppointments() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [rescheduleFor, setRescheduleFor] = useState(null);

@@ -56,3 +56,37 @@ exports.loginAdmin = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.updateAdminProfile = async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.admin.id);
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    const { name, phone, age, gender, imageUrl } = req.body;
+    
+    if (name) admin.name = name;
+    if (phone) admin.phone = phone;
+    if (age) admin.age = age;
+    if (gender) admin.gender = gender;
+    if (imageUrl) admin.imageUrl = imageUrl;
+
+    const updatedAdmin = await admin.save();
+
+    res.json({
+      user: {
+        id: updatedAdmin._id,
+        name: updatedAdmin.name,
+        email: updatedAdmin.email,
+        role: updatedAdmin.role,
+        imageUrl: updatedAdmin.imageUrl,
+        phone: updatedAdmin.phone,
+        age: updatedAdmin.age,
+        gender: updatedAdmin.gender
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

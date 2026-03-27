@@ -119,4 +119,14 @@ export const apiService = {
     const res = await api.post(`/consultations/${patientId}`, data);
     return res.data;
   },
+
+  updateUser: async (id, data) => {
+    const res = await api.put("/admin/profile", data);
+    return res.data;
+  },
+
+  updateUserPhoto: async (id, imageUrl) => {
+    const res = await api.put("/admin/profile", { imageUrl });
+    return res.data;
+  },
 };

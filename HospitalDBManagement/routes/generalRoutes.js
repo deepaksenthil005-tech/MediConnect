@@ -19,7 +19,7 @@ router.delete('/patients/:id', protectAdmin, deletePatient);
 
 // Feedbacks
 router.route('/feedback')
-  .get(protectAny, getFeedback)
+  .get(getFeedback)
   .post(protectPatient, submitFeedback);
 
 // Notifications

@@ -70,9 +70,9 @@ export default function Reviews() {
           <form onSubmit={handleSubmit}>
             <div className="pd-form-group">
               <label className="pd-form-label">Doctor to Review</label>
-              <select 
-                className="pd-form-input" 
-                value={formDoctorName} 
+              <select
+                className="pd-form-input border-2 border-gray-200"
+                value={formDoctorName}
                 onChange={(e) => setFormDoctorName(e.target.value)}
                 required
               >

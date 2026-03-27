@@ -44,7 +44,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       const updatedUser = await apiService.updateUser(user.id, form);
-      updateUser(updatedUser);
+      updateUser(updatedUser.user);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {
@@ -75,9 +75,9 @@ export default function Profile() {
             <div className="relative flex flex-col items-center">
               <div className="relative mb-6">
                 <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-[2rem] bg-slate-100 border-4 border-white shadow-2xl overflow-hidden flex items-center justify-center">
-                  {user?.image_url ? (
+                  {user?.imageUrl ? (
                     <img
-                      src={user.image_url}
+                      src={user.imageUrl}
                       alt=""
                       className="w-full h-full object-cover"
                     />
@@ -187,9 +187,12 @@ export default function Profile() {
                       reader.onloadend = async () => {
                         const base64 = reader.result;
 
-                        await apiService.updateUserPhoto(user.id, base64);
-
-                        window.location.reload();
+                        const res = await apiService.updateUserPhoto(user.id, base64);
+                        if (res.user) {
+                          updateUser(res.user);
+                        } else {
+                          window.location.reload();
+                        }
                       };
 
                       reader.readAsDataURL(file);

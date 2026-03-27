@@ -254,9 +254,9 @@ export default function AdminLayout({ children }) {
                 className="flex items-center gap-3 p-1.5 pr-4 rounded-md bg-slate-900 border border-slate-900 hover:bg-emerald-600 hover:border-emerald-600 transition-all shadow-md shadow-slate-900/10 group"
               >
                 <div className="w-9 h-9 rounded-md bg-white/10 overflow-hidden flex-shrink-0 flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-all">
-                  {user?.image_url ? (
+                  {user?.imageUrl ? (
                     <img
-                      src={user.image_url}
+                      src={user.imageUrl}
                       alt="Admin"
                       className="w-full h-full object-cover"
                     />

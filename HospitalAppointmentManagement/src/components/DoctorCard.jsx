@@ -6,7 +6,7 @@ export default function DoctorCard({ doctor, onBook }) {
     <div className="bg-white rounded-md border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 group">
       <div className="relative h-64 overflow-hidden">
         <img
-          src={doctor.image_url || `https://picsum.photos/seed/${doctor.id}/400/600`}
+          src={doctor.imageUrl || `https://picsum.photos/seed/${doctor.id}/400/600`}
           alt={doctor.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           referrerPolicy="no-referrer"

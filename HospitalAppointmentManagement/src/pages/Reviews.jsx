@@ -44,12 +44,12 @@ export default function Reviews() {
                 <Quote className="absolute top-6 right-8 h-10 w-10 text-emerald-100" />
                 <div className="flex items-center space-x-4 mb-6">
                   <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(r.patient_name)}&background=random&size=56`}
-                    alt={r.patient_name}
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(r.patientName)}&background=random&size=56`}
+                    alt={r.patientName}
                     className="w-14 h-14 rounded-full object-cover"
                   />
                   <div>
-                    <h3 className="font-bold text-gray-900">{r.patient_name}</h3>
+                    <h3 className="font-bold text-gray-900">{r.patientName}</h3>
                     <p className="text-sm text-emerald-600">Verified Patient</p>
                   </div>
                 </div>

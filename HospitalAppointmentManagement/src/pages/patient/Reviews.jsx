@@ -29,7 +29,8 @@ export default function Reviews() {
 
     await apiService.submitFeedback({
       patientName: user?.name || 'Anonymous',
-      doctorName: 'General',
+      patientImageUrl: user?.imageUrl || '',
+      doctorName: formDoctorName || 'General',
       rating,
       comment: comment.trim(),
     });
@@ -37,9 +38,17 @@ export default function Reviews() {
     setSubmitted(true);
     setComment('');
     setRating(5);
+    setFormDoctorName('');
     fetchReviews();
     setTimeout(() => setSubmitted(false), 3000);
   };
+
+  const [formDoctorName, setFormDoctorName] = useState('');
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    apiService.getDoctors().then(setDoctors).catch(console.error);
+  }, []);
 
   const renderStars = (r) =>
     [1, 2, 3, 4, 5].map((s) => (
@@ -59,6 +68,21 @@ export default function Reviews() {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            <div className="pd-form-group">
+              <label className="pd-form-label">Doctor to Review</label>
+              <select 
+                className="pd-form-input" 
+                value={formDoctorName} 
+                onChange={(e) => setFormDoctorName(e.target.value)}
+                required
+              >
+                <option value="">Select a Doctor</option>
+                <option value="General Hospital">General Hospital</option>
+                {doctors.map(doc => (
+                  <option key={doc.id} value={doc.name}>Dr. {doc.name} ({doc.specialization})</option>
+                ))}
+              </select>
+            </div>
             <div className="pd-form-group">
               <label className="pd-form-label">Star Rating</label>
               <div style={{ display: 'flex', gap: 4 }}>
@@ -125,12 +149,19 @@ export default function Reviews() {
                 <Quote size={20} style={{ position: 'absolute', top: '1rem', right: '1rem', color: 'var(--card-border)', opacity: 0.5 }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(item.patientName || item.patient_name)}&background=random&size=40`}
+                    src={item.patientImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.patientName || item.patient_name)}&background=random&size=40`}
                     alt={item.patientName}
-                    style={{ width: 40, height: 40, borderRadius: '50%' }}
+                    style={{ width: 40, height: 40, borderRadius: '50%', objectCover: 'cover' }}
                   />
                   <div>
-                    <p style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-main)' }}>{item.patientName || item.patient_name}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <p style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-main)' }}>{item.patientName || item.patient_name}</p>
+                      {item.doctorName && (
+                        <span style={{ fontSize: '0.7rem', color: 'var(--success)', fontWeight: 700 }}>
+                          • Reviewed Dr. {item.doctorName}
+                        </span>
+                      )}
+                    </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <div style={{ display: 'flex', gap: 2 }}>{renderStars(item.rating)}</div>
                       <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 3 }}>

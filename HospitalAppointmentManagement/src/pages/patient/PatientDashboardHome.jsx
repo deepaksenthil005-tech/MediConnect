@@ -184,8 +184,8 @@ export default function PatientDashboardHome() {
               <TrendingUp size={18} className="text-emerald-500" />
             </div>
           </div>
-          <div style={{ height: 280, minWidth: 0 }}>
-            <ResponsiveContainer width="100%" height="100%">
+          <div style={{ height: 280, width: '100%', minWidth: 0 }}>
+            <ResponsiveContainer width="100%" height={280} minWidth={1}>
               <LineChart data={appointmentsPerDay}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />
@@ -217,8 +217,8 @@ export default function PatientDashboardHome() {
               <Calendar size={18} className="text-blue-500" />
             </div>
           </div>
-          <div style={{ height: 280, minWidth: 0 }}>
-            <ResponsiveContainer width="100%" height="100%">
+          <div style={{ height: 280, width: '100%', minWidth: 0 }}>
+            <ResponsiveContainer width="100%" height={280} minWidth={1}>
               <BarChart data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }} dy={10} />

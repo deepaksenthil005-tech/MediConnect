@@ -204,9 +204,9 @@ export default function PatientLayout() {
                           No notifications
                         </div>
                       ) : (
-                        notifications.map((n) => (
+                        notifications.slice(0, 5).map((n) => (
                           <div
-                            key={n.id}
+                            key={n.id || n._id}
                             className="p-4 rounded-md hover:bg-slate-50 transition-colors border-b border-slate-50 last:border-0"
                           >
                             <div className="text-sm font-black text-slate-900 mb-1">
@@ -219,6 +219,17 @@ export default function PatientLayout() {
                         ))
                       )}
                     </div>
+                    {notifications.length > 0 && (
+                      <div className="p-3 border-t border-slate-50">
+                        <Link
+                          to="/dashboard/notifications"
+                          onClick={() => setShowNotifications(false)}
+                          className="block text-center text-xs font-black uppercase tracking-widest text-emerald-600 hover:text-emerald-700 w-full p-2 bg-emerald-50 hover:bg-emerald-100 rounded-md transition-colors"
+                        >
+                          View All Notifications
+                        </Link>
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

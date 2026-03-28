@@ -19,6 +19,7 @@ import Prescriptions from './pages/patient/Prescriptions';
 import PatientReviews from './pages/patient/Reviews';
 import PatientProfile from './pages/patient/Profile';
 import PatientSettings from './pages/patient/Settings';
+import Notifications from './pages/patient/Notifications';
 import About from './pages/About';
 import Services from './pages/Services';
 import Reviews from './pages/Reviews';
@@ -70,6 +71,7 @@ function AppContent() {
             <Route path="reviews" element={<PatientReviews />} />
             <Route path="profile" element={<PatientProfile />} />
             <Route path="settings" element={<PatientSettings />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Routes>
       </main>

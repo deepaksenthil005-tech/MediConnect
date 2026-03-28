@@ -129,4 +129,9 @@ export const apiService = {
     const res = await api.put("/admin/profile", { imageUrl });
     return res.data;
   },
+
+  getAdminProfile: async () => {
+    const res = await api.get("/admin/me");
+    return res.data;
+  },
 };

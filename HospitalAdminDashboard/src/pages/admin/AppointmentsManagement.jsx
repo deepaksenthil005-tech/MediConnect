@@ -141,7 +141,7 @@ export default function AppointmentsManagement() {
             const status = getStatusInfo(apt.status);
             return (
               <motion.div
-                key={apt.id}
+                key={apt._id || apt.id || index}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -337,10 +337,10 @@ export default function AppointmentsManagement() {
                     </label>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {selectedPatientReport.medicalRecords && selectedPatientReport.medicalRecords.length > 0 ? (
-                      selectedPatientReport.medicalRecords.map((record) => (
-                        <div key={record.id} className="p-6 rounded-md bg-white border border-slate-100 flex items-center justify-between group hover:shadow-md transition-all duration-300">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedPatientReport.medicalRecords && selectedPatientReport.medicalRecords.length > 0 ? (
+                    selectedPatientReport.medicalRecords.map((record, index) => (
+                      <div key={record._id || record.id || index} className="p-6 rounded-md bg-white border border-slate-100 flex items-center justify-between group hover:shadow-md transition-all duration-300">
                           <div className="flex items-center space-x-5">
                             <div className="w-14 h-14 bg-slate-50 rounded-md flex items-center justify-center group-hover:bg-emerald-50 transition-colors">
                               <FileText className="h-7 w-7 text-emerald-600" />

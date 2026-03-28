@@ -25,9 +25,9 @@ exports.registerAdmin = async (req, res) => {
         email: admin.email,
         role: admin.role,
         imageUrl: admin.imageUrl,
-        phone: admin.phone,
-        age: admin.age,
-        gender: admin.gender
+        phone: admin.phone || '',
+        age: admin.age || 0,
+        gender: admin.gender || ''
       },
       token: generateToken(admin._id),
     });
@@ -49,9 +49,9 @@ exports.loginAdmin = async (req, res) => {
           email: admin.email,
           role: admin.role,
           imageUrl: admin.imageUrl,
-          phone: admin.phone,
-          age: admin.age,
-          gender: admin.gender
+          phone: admin.phone || '',
+          age: admin.age || 0,
+          gender: admin.gender || ''
         },
         token: generateToken(admin._id),
       });
@@ -94,9 +94,31 @@ exports.updateAdminProfile = async (req, res) => {
         email: updatedAdmin.email,
         role: updatedAdmin.role,
         imageUrl: updatedAdmin.imageUrl,
-        phone: updatedAdmin.phone,
-        age: updatedAdmin.age,
-        gender: updatedAdmin.gender
+        phone: updatedAdmin.phone || '',
+        age: updatedAdmin.age || 0,
+        gender: updatedAdmin.gender || ''
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.getAdminProfile = async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.admin.id).select('-password');
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+    res.json({
+      user: {
+        id: admin._id,
+        name: admin.name,
+        email: admin.email,
+        role: admin.role,
+        imageUrl: admin.imageUrl,
+        phone: admin.phone || '',
+        age: admin.age || 0,
+        gender: admin.gender || ''
       }
     });
   } catch (error) {

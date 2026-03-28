@@ -266,7 +266,7 @@ export default function PatientsManagement() {
                   </h3>
                   <div className="flex items-center gap-3">
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                      ID: #RE-{1000 + patient.id}
+                      ID:{parseInt(patient?._id?.slice(-4), 16)}
                     </span>
                     <div className="w-1 h-1 rounded-full bg-slate-200" />
                     <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">

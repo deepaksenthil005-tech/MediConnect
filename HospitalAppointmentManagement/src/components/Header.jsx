@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Stethoscope, LogOut, LayoutDashboard, Menu, X } from 'lucide-react';
+import { Stethoscope, LogOut, LayoutDashboard, Menu, X, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Header() {
@@ -68,6 +68,14 @@ export default function Header() {
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   <span>Patient Portal</span>
+                </Link>
+                <Link
+                  to="/dashboard/notifications"
+                  className="p-2 text-gray-400 hover:text-emerald-600 transition-colors relative"
+                  title="Notifications"
+                >
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full border-2 border-white" />
                 </Link>
                 <button
                   onClick={handleLogout}

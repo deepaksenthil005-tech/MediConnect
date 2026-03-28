@@ -5,6 +5,7 @@ const { protectAdmin } = require('../middlewares/authMiddleware');
 
 router.post('/register', registerAdmin);
 router.post('/login', loginAdmin);
+router.get('/me', protectAdmin, getAdminProfile);
 router.put('/profile', protectAdmin, updateAdminProfile);
 
 module.exports = router;

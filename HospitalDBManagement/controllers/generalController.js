@@ -42,7 +42,15 @@ exports.submitFeedback = async (req, res) => {
  */
 exports.getNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find({}).sort({ createdAt: -1 });
+    let query = {};
+    if (req.admin) {
+      // Admins see all notifications
+      query = {};
+    } else if (req.user) {
+      // Patients see notifications for ALL or PATIENTS
+      query = { target: { $in: ['ALL', 'PATIENTS'] } };
+    }
+    const notifications = await Notification.find(query).sort({ createdAt: -1 });
     res.json(notifications);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -56,7 +64,14 @@ exports.getNotifications = async (req, res) => {
  */
 exports.sendNotification = async (req, res) => {
   try {
-    const notification = await Notification.create(req.body);
+    const { title, message, type, target, category } = req.body;
+    const notification = await Notification.create({
+      title,
+      message,
+      type: type || 'INFO',
+      target: target || 'ALL',
+      category: category || 'SYSTEM'
+    });
     res.status(201).json(notification);
   } catch (error) {
     res.status(400).json({ message: error.message });

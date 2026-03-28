@@ -46,7 +46,6 @@ export default function AdminLayout({ children }) {
   };
 
   React.useEffect(() => {
-    if (!showNotifications || notifications.length > 0) return;
     setLoadingNotifications(true);
     // Use the same notification service as patient for now or admin specific one if exists
     import("../services/api").then(({ apiService }) => {
@@ -55,7 +54,9 @@ export default function AdminLayout({ children }) {
         .then((data) => setNotifications(data.slice().reverse()))
         .finally(() => setLoadingNotifications(false));
     });
-  }, [showNotifications]);
+  }, []);
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -202,7 +203,11 @@ export default function AdminLayout({ children }) {
                 className="p-2.5 rounded-md text-slate-500 bg-slate-50 hover:bg-slate-100 transition-all relative"
               >
                 <Bell size={20} />
-                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center"></span>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
               </button>
 
               <AnimatePresence>
@@ -228,7 +233,7 @@ export default function AdminLayout({ children }) {
                       ) : (
                         notifications.map((n) => (
                           <div
-                            key={n.id}
+                            key={n.id || n._id}
                             className="p-4 rounded-md hover:bg-slate-50 transition-colors border-b border-slate-50 last:border-0"
                           >
                             <div className="text-sm font-black text-slate-900 mb-1">
@@ -241,6 +246,17 @@ export default function AdminLayout({ children }) {
                         ))
                       )}
                     </div>
+                    {notifications.length > 0 && (
+                      <div className="p-3 border-t border-slate-50">
+                        <Link
+                          to="/admin/notifications"
+                          onClick={() => setShowNotifications(false)}
+                          className="block text-center text-xs font-black uppercase tracking-widest text-emerald-600 hover:text-emerald-700 w-full p-2 bg-emerald-50 hover:bg-emerald-100 rounded-md transition-colors"
+                        >
+                          View All Notifications
+                        </Link>
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

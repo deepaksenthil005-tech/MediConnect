@@ -64,13 +64,14 @@ export default function PatientLayout() {
   };
 
   useEffect(() => {
-    if (!showNotifications || notifications.length > 0) return;
     setLoadingNotifications(true);
     apiService
       .getNotifications()
       .then((data) => setNotifications(data.slice().reverse()))
       .finally(() => setLoadingNotifications(false));
-  }, [showNotifications, notifications.length]);
+  }, []);
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
     <div className="h-screen bg-slate-50 flex overflow-hidden">
@@ -178,9 +179,11 @@ export default function PatientLayout() {
                 onClick={() => setShowNotifications((v) => !v)}
               >
                 <Bell size={20} />
-                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
-                  
-                </span>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
               </button>
 
               <AnimatePresence>

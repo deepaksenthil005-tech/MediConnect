@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { 
   getFeedback, submitFeedback,
-  getNotifications, sendNotification,
+  getNotifications, sendNotification, markNotificationRead,
   getHealthReport, saveHealthReport, addMedicalRecord, deleteMedicalRecord,
   getConsultationMessages, addConsultationMessage, getAllConsultations,
   getAdminStats, getPatients, deletePatient
@@ -26,6 +26,8 @@ router.route('/feedback')
 router.route('/notifications')
   .get(protectAny, getNotifications)
   .post(protectAdmin, sendNotification);
+
+router.put('/notifications/:id/read', protectAny, markNotificationRead);
 
 // Health Reports
 router.route('/reports/:patientId')

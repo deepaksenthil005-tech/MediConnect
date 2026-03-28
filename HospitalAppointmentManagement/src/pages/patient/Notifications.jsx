@@ -14,8 +14,18 @@ export default function Notifications() {
   const fetchNotifications = async () => {
     try {
       const data = await apiService.getNotifications();
-      // Only keep the required notification types for patient
       setNotifications(data);
+
+      // Mark unread notifications as read
+      const unread = data.filter(n => !n.isRead);
+      unread.forEach(async (n) => {
+        try {
+          await apiService.markNotificationRead(n._id);
+        } catch (e) {
+          console.error("Failed to mark as read:", e);
+        }
+      });
+      
     } catch (err) {
       console.error("Failed to fetch notifications:", err);
     } finally {

@@ -64,6 +64,16 @@ export default function Notifications() {
 
     setNotifications(combined);
     setLoading(false);
+
+    // Mark unread database notifications as read
+    const unread = notifs.filter(n => !n.isRead);
+    unread.forEach(async (n) => {
+      try {
+        await apiService.markNotificationRead(n._id || n.id);
+      } catch (e) {
+        console.error("Failed to mark as read:", e);
+      }
+    });
   };
 
   const handleSubmit = async (e) => {

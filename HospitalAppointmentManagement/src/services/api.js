@@ -78,6 +78,10 @@ export const apiService = {
     const res = await api.get("/notifications");
     return res.data;
   },
+  markNotificationRead: async (id) => {
+    const res = await api.put(`/notifications/${id}/read`);
+    return res.data;
+  },
 
   // --- HEALTH REPORTS ---
   getHealthReport: async (patientId) => {

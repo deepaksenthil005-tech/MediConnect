@@ -85,6 +85,11 @@ export const apiService = {
     return res.data;
   },
 
+  markNotificationRead: async (id) => {
+    const res = await api.put(`/notifications/${id}/read`);
+    return res.data;
+  },
+
   sendNotification: async (data) => {
     const res = await api.post("/notifications", data);
     return res.data;

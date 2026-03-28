@@ -44,11 +44,11 @@ exports.getNotifications = async (req, res) => {
   try {
     let query = {};
     if (req.admin) {
-      // Admins see all notifications
-      query = {};
+      // Admins see all notifications + their specific notifications
+      query = { $or: [{ target: 'ADMIN' }, { target: 'ALL' }, { userId: req.admin.id }] };
     } else if (req.user) {
-      // Patients see notifications for ALL or PATIENTS
-      query = { target: { $in: ['ALL', 'PATIENTS'] } };
+      // Patients see notifications for ALL, PATIENTS, or specifically targeted to them
+      query = { $or: [{ target: { $in: ['ALL', 'PATIENTS'] } }, { userId: req.user.id }] };
     }
     const notifications = await Notification.find(query).sort({ createdAt: -1 });
     res.json(notifications);
@@ -64,15 +64,35 @@ exports.getNotifications = async (req, res) => {
  */
 exports.sendNotification = async (req, res) => {
   try {
-    const { title, message, type, target, category } = req.body;
+    const { title, message, type, target, category, userId } = req.body;
     const notification = await Notification.create({
       title,
       message,
       type: type || 'INFO',
       target: target || 'ALL',
-      category: category || 'SYSTEM'
+      category: category || 'SYSTEM',
+      userId: userId || null
     });
     res.status(201).json(notification);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+/**
+ * @desc    Mark a notification as read
+ * @route   PUT /api/notifications/:id/read
+ * @access  Private (Any)
+ */
+exports.markNotificationRead = async (req, res) => {
+  try {
+    const notification = await Notification.findByIdAndUpdate(
+      req.params.id,
+      { isRead: true },
+      { new: true }
+    );
+    if (!notification) return res.status(404).json({ message: 'Notification not found' });
+    res.json(notification);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

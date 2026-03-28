@@ -1,6 +1,7 @@
 const Appointment = require('../models/Appointment');
 const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient');
+const Notification = require('../models/Notification');
 
 /**
  * @desc    Get all appointments for a patient or all appointments for an admin
@@ -76,6 +77,15 @@ exports.createAppointment = async (req, res) => {
       status: 'PENDING'
     });
 
+    // Notify admins about the new appointment request
+    await Notification.create({
+      title: 'New Appointment Request',
+      message: `Patient ${patient.name} requested an appointment with Dr. ${doctor.name} on ${date} at ${time}.`,
+      type: 'INFO',
+      target: 'ADMIN',
+      category: 'APPOINTMENT'
+    });
+
     res.status(201).json(newAppointment);
   } catch (error) {
     console.error('Create Appointment Error:', error);
@@ -105,6 +115,21 @@ exports.updateAppointmentStatus = async (req, res) => {
     );
 
     if (!appointment) return res.status(404).json({ message: 'Appointment not found' });
+
+    // Notify patient about the appointment status update
+    let notifType = 'INFO';
+    if (status === 'CONFIRMED' || status === 'COMPLETED') notifType = 'SUCCESS';
+    if (status === 'CANCELLED') notifType = 'WARNING';
+
+    await Notification.create({
+      title: `Appointment ${status}`,
+      message: `Your appointment with Dr. ${appointment.doctorName} on ${appointment.date} has been ${status.toLowerCase()}.`,
+      type: notifType,
+      target: 'PATIENTS',
+      category: 'APPOINTMENT',
+      userId: appointment.patientId
+    });
+
     res.json(appointment);
   } catch (error) {
     res.status(400).json({ message: error.message });

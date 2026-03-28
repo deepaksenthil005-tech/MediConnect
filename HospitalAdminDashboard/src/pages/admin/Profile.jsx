@@ -30,7 +30,7 @@ export default function Profile() {
         email: user.email || "",
         phone: user.phone || "",
         age: user.age || "",
-        gender: user.gender || "Not specified",
+        gender: user.gender || "",
       });
     }
   }, [user]);
@@ -83,7 +83,7 @@ export default function Profile() {
                     />
                   ) : (
                     <span className="text-3xl md:text-4xl font-black text-slate-300">
-                      {user?.name?.[0] || "A"}
+                      {user.name?.[0]}
                     </span>
                   )}
                 </div>
@@ -94,7 +94,7 @@ export default function Profile() {
               </div>
 
               <h2 className="text-xl md:text-2xl font-black text-slate-900 text-center">
-                {user?.name || "Administrator"}
+                {user.name}
               </h2>
 
               <p className="text-emerald-600 font-bold uppercase tracking-widest text-[10px] mt-1 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
@@ -114,7 +114,7 @@ export default function Profile() {
                     </label>
 
                     <p className="text-sm font-bold text-slate-900 break-all">
-                      {user?.email}
+                      {user.email}
                     </p>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ export default function Profile() {
                     </label>
 
                     <p className="text-sm font-bold text-slate-900">
-                      {form.phone}
+                      {user.phone}
                     </p>
                   </div>
                 </div>
@@ -144,7 +144,7 @@ export default function Profile() {
                     </label>
 
                     <p className="text-sm font-bold text-slate-900">
-                      {form.age} Yrs
+                      {`${user.age} Yrs`}
                     </p>
                   </div>
 
@@ -154,7 +154,7 @@ export default function Profile() {
                     </label>
 
                     <p className="text-sm font-bold text-slate-900">
-                      {form.gender}
+                      {user.gender}
                     </p>
                   </div>
                 </div>
@@ -294,8 +294,8 @@ export default function Profile() {
                       type="button"
                       onClick={() => setForm((f) => ({ ...f, gender: g }))}
                       className={`py-3 md:py-4 rounded-xl md:rounded-2xl border transition-all font-black text-xs uppercase tracking-widest ${form.gender === g
-                          ? "bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-600/20"
-                          : "bg-white border-slate-100 text-slate-500 hover:border-slate-300"
+                        ? "bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-600/20"
+                        : "bg-white border-slate-100 text-slate-500 hover:border-slate-300"
                         }`}
                     >
                       {g}
@@ -308,8 +308,8 @@ export default function Profile() {
                 <button
                   type="submit"
                   className={`px-8 py-3 md:px-10 md:py-4 rounded-xl md:rounded-2xl transition-all font-black uppercase tracking-widest text-sm ${saved
-                      ? "bg-emerald-500 text-white shadow-emerald-500/20"
-                      : "bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20"
+                    ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                    : "bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20"
                     } shadow-xl active:scale-95`}
                 >
                   {saved ? "Changes Applied" : "Update Profile"}

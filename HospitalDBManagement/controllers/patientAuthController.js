@@ -24,7 +24,11 @@ exports.registerPatient = async (req, res) => {
         name: patient.name,
         email: patient.email,
         role: 'USER',
-        imageUrl: patient.imageUrl
+        imageUrl: patient.imageUrl,
+        phone: patient.phone,
+        age: patient.age,
+        gender: patient.gender,
+        medicalHistory: patient.medicalHistory
       },
       token: generateToken(patient._id),
     });
@@ -45,7 +49,11 @@ exports.loginPatient = async (req, res) => {
           name: patient.name,
           email: patient.email,
           role: 'USER',
-          imageUrl: patient.imageUrl
+          imageUrl: patient.imageUrl,
+          phone: patient.phone,
+          age: patient.age,
+          gender: patient.gender,
+          medicalHistory: patient.medicalHistory
         },
         token: generateToken(patient._id),
       });
@@ -69,12 +77,12 @@ exports.updateProfile = async (req, res) => {
 
     const { name, phone, age, gender, medicalHistory, imageUrl } = req.body;
     
-    if (name) patient.name = name;
-    if (phone) patient.phone = phone;
-    if (age) patient.age = age;
-    if (gender) patient.gender = gender;
-    if (medicalHistory) patient.medicalHistory = medicalHistory;
-    if (imageUrl) patient.imageUrl = imageUrl;
+    if (name !== undefined) patient.name = name;
+    if (phone !== undefined) patient.phone = phone;
+    if (age !== undefined) patient.age = age;
+    if (gender !== undefined) patient.gender = gender;
+    if (medicalHistory !== undefined) patient.medicalHistory = medicalHistory;
+    if (imageUrl !== undefined) patient.imageUrl = imageUrl;
 
     const updatedPatient = await patient.save();
 

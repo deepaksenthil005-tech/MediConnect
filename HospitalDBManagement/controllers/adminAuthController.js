@@ -24,7 +24,10 @@ exports.registerAdmin = async (req, res) => {
         name: admin.name,
         email: admin.email,
         role: admin.role,
-        imageUrl: admin.imageUrl
+        imageUrl: admin.imageUrl,
+        phone: admin.phone,
+        age: admin.age,
+        gender: admin.gender
       },
       token: generateToken(admin._id),
     });
@@ -45,7 +48,10 @@ exports.loginAdmin = async (req, res) => {
           name: admin.name,
           email: admin.email,
           role: admin.role,
-          imageUrl: admin.imageUrl
+          imageUrl: admin.imageUrl,
+          phone: admin.phone,
+          age: admin.age,
+          gender: admin.gender
         },
         token: generateToken(admin._id),
       });
@@ -60,19 +66,26 @@ exports.loginAdmin = async (req, res) => {
 exports.updateAdminProfile = async (req, res) => {
   try {
     const admin = await Admin.findById(req.admin.id);
+    console.log('Admin found for update:', admin ? admin.email : 'NOT FOUND');
     if (!admin) {
       return res.status(404).json({ message: 'Admin not found' });
     }
 
     const { name, phone, age, gender, imageUrl } = req.body;
+    console.log('Full update body:', req.body);
     
-    if (name) admin.name = name;
-    if (phone) admin.phone = phone;
-    if (age) admin.age = age;
-    if (gender) admin.gender = gender;
-    if (imageUrl) admin.imageUrl = imageUrl;
+    if (name !== undefined) admin.name = name;
+    if (phone !== undefined) admin.phone = phone;
+    if (age !== undefined) admin.age = age;
+    if (gender !== undefined) admin.gender = gender;
+    if (imageUrl !== undefined) admin.imageUrl = imageUrl;
 
     const updatedAdmin = await admin.save();
+    console.log('Update successful, saved fields:', { 
+      phone: updatedAdmin.phone, 
+      age: updatedAdmin.age, 
+      gender: updatedAdmin.gender 
+    });
 
     res.json({
       user: {

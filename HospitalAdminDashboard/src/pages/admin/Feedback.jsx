@@ -112,24 +112,18 @@ export default function Feedback() {
 
               <div className="flex items-start gap-4 md:gap-6 mb-6 md:mb-8">
                 <div className="relative">
-                  <div className="w-16 h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-2xl lg:rounded-[2rem] bg-emerald-50 border-4 border-white shadow-xl flex items-center justify-center text-emerald-600 font-black overflow-hidden">
+                  <div className="w-16 h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-2 lg:rounded-[1rem] bg-emerald-50 border-4 border-white shadow-xl flex items-center justify-center text-emerald-600 font-black overflow-hidden">
                     <img
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(item.patient_name)}&background=random`}
+                      src={item.patientImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.patientName || item.patient_name)}&background=random&size=40`}
                       className="w-full h-full object-cover"
                       alt=""
                     />
-                  </div>
-
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 bg-white rounded-lg shadow-lg flex items-center justify-center">
-                    <span className="text-[9px] md:text-xs font-black text-amber-500">
-                      {item.rating}
-                    </span>
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-lg md:text-xl lg:text-2xl font-black text-slate-900 tracking-tight">
-                    {item.patient_name}
+                    {item.patientName}
                   </h4>
 
                   <div className="flex items-center gap-3 md:gap-4 mt-1">
@@ -137,7 +131,7 @@ export default function Feedback() {
 
                     <div className="flex items-center gap-1 text-[9px] md:text-[10px] font-black text-slate-300 uppercase">
                       <Calendar className="h-3 w-3" />
-                      {new Date(item.created_at).toLocaleDateString("en-IN", {
+                      {new Date(item.createdAt).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
                         year: "numeric",
@@ -155,8 +149,20 @@ export default function Feedback() {
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-2 md:py-3 bg-white border border-slate-100 rounded-xl md:rounded-2xl shadow-sm">
-                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-slate-900 flex items-center justify-center text-white">
-                    <UserRound className="h-4 w-4 md:h-5 md:w-5" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-white overflow-hidden shadow-sm">
+                    {item.doctorImageUrl ? (
+                      <img
+                        src={item.doctorImageUrl}
+                        className="w-full h-full object-cover"
+                        alt={item.doctorName}
+                      />
+                    ) : (
+                      <img
+                        src={`https://ui-avatars.com/api/?name=Dr.+${encodeURIComponent(item.doctorName)}&background=1e293b&color=ffffff&size=40`}
+                        className="w-full h-full object-cover"
+                        alt="Dr."
+                      />
+                    )}
                   </div>
 
                   <div>
@@ -164,17 +170,10 @@ export default function Feedback() {
                       Regarding Specialist
                     </p>
                     <p className="text-xs md:text-sm font-black text-slate-900">
-                      Dr. {item.doctor_name}
+                      {item.doctorName}
                     </p>
                   </div>
                 </div>
-
-                <button className="flex items-center justify-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-slate-50 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-xl md:rounded-2xl transition-all active:scale-95">
-                  <ThumbsUp className="h-4 w-4" />
-                  <span className="text-[10px] md:text-xs font-black uppercase tracking-widest">
-                    Acknowledge
-                  </span>
-                </button>
               </div>
             </motion.div>
           ))

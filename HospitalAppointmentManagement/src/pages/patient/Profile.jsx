@@ -289,8 +289,8 @@ export default function Profile() {
                       type="button"
                       onClick={() => setForm((f) => ({ ...f, gender: g }))}
                       className={`flex-1 py-4 rounded-md border transition-all font-black text-xs uppercase tracking-widest ${form.gender === g
-                          ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                          : "bg-white border-slate-100 text-slate-500 hover:border-slate-300"
+                        ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-600/20"
+                        : "bg-white border-slate-100 text-slate-500 hover:border-slate-300"
                         }`}
                     >
                       {g}
@@ -317,8 +317,8 @@ export default function Profile() {
                 <button
                   type="submit"
                   className={`px-10 py-4 rounded-md transition-all font-black uppercase tracking-widest text-sm ${saved
-                      ? "bg-emerald-500 text-white shadow-emerald-500/20"
-                      : "bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20"
+                    ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                    : "bg-slate-900 text-white hover:bg-emerald-600 shadow-slate-900/20"
                     } shadow-md active:scale-95`}
                 >
                   {saved ? "Changes Applied" : "Save Changes"}

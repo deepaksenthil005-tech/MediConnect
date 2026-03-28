@@ -4,6 +4,7 @@ const feedbackSchema = new mongoose.Schema({
   patientName: { type: String, required: true },
   patientImageUrl: { type: String, default: '' },
   doctorName: { type: String, required: true },
+  doctorImageUrl: { type: String, default: '' },
   rating: { type: Number, required: true, min: 1, max: 5 },
   comment: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }

@@ -27,10 +27,13 @@ export default function Reviews() {
     e.preventDefault();
     if (!comment.trim()) return;
 
+    const selectedDoctor = doctors.find(d => d.name === formDoctorName);
+
     await apiService.submitFeedback({
       patientName: user?.name || 'Anonymous',
       patientImageUrl: user?.imageUrl || '',
       doctorName: formDoctorName || 'General',
+      doctorImageUrl: selectedDoctor?.imageUrl || '',
       rating,
       comment: comment.trim(),
     });
